@@ -8,7 +8,7 @@ const routes: Routes = [
   {path: "import-receipt", component: ReceiptImportComponent},
   {path: "history", component: HistoryComponent},
   {path: "dictionaries", component: DictionariesComponent},
-  {path: "", redirectTo: "/import-paragonu", pathMatch: "full"}
+  {path: "", redirectTo: "import-paragonu", pathMatch: "full"}
 ];
 
 @NgModule({
