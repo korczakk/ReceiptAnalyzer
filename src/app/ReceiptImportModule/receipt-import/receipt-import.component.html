@@ -1,8 +1,16 @@
-<div class="container text-center">
-  
-  <label for="fileBrowser" class="btn btn-info">Wybierz plik</label>
-  <input type="file" id="fileBrowser" class="d-none">
-
+<div class="container d-flex justify-content-center">
+  <div>
+    <div class="image-box">
+      <img [src]="selectedImage" *ngIf="selectedImage">
+    </div>
+    <div>
+      <label for="fileBrowser" class="btn btn-info mr-1">Wybierz plik</label>
+      <input type="file" accept="image/*" (change)="createPreview($event.target.files[0]);" id="fileBrowser"
+        class="d-none">
+      <label class="btn btn-success">Procesuj</label>
+      <div>
+        {{fileName}}
+      </div>
+    </div>
+  </div>
 </div>
-
-
