@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ImageFileService } from '../Services/image-file.service';
 
 @Component({
   templateUrl: './receipt-import.component.html',
@@ -7,27 +8,28 @@ import { Component, OnInit } from '@angular/core';
 export class ReceiptImportComponent implements OnInit {
 
   public selectedImage;
-  public fileName: string;
+  public file: File;
 
-  constructor() { }
+  constructor(private fileService: ImageFileService) { }
 
   ngOnInit() {
   }
 
-  public createPreview(file): void {
+  public onFileSelected(file): void {
     if (!file)
       return;
 
-    if (file.type.indexOf('image') == -1)
-      alert('Pliku musi być grafiką.');
+    let errorMessage = this.fileService.validateImageFile(file);
+    if (errorMessage != '')  
+    {
+      alert(errorMessage);
+      return;
+    }
 
-    this.fileName = file.name;
+    this.file = file;
 
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-
-    reader.onload = (_event) => {
-      this.selectedImage = reader.result;
-    };
+    this.fileService.convertToDataUrl(file).subscribe(x => {
+      this.selectedImage = x;
+    });
   }
 }
