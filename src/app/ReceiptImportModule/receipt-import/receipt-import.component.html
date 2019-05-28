@@ -7,7 +7,7 @@
       <label for="fileBrowser" class="btn btn-info mr-1">Wybierz plik</label>
       <input type="file" accept="image/jpeg, image/bmp, image/gif, image/png" (change)="onFileSelected($event.target.files[0]);" id="fileBrowser"
         class="d-none">
-      <label class="btn btn-success">Procesuj</label>
+      <label class="btn btn-success" (click)="onSubmit()">Procesuj</label>
       <div>
         {{file?.name}}
       </div>

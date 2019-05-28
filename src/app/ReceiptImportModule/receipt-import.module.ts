@@ -4,6 +4,8 @@ import { ReceiptImportComponent } from './receipt-import/receipt-import.componen
 import { HistoryComponent } from './history/history.component';
 import { DictionariesComponent } from './dictionaries/dictionaries.component';
 import { ImageFileService } from './Services/image-file.service';
+import { OcrService } from './Services/ocr.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -11,10 +13,12 @@ import { ImageFileService } from './Services/image-file.service';
     HistoryComponent, 
     DictionariesComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    HttpClientModule
   ],
   providers: [
-    ImageFileService
+    ImageFileService,
+    OcrService
   ]
 })
 export class ReceiptImportModule { }
