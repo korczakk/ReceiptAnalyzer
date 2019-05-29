@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { stringify } from '@angular/compiler/src/util';
 
 @Injectable()
 export class ImageFileService {

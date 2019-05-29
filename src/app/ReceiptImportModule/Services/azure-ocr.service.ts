@@ -3,21 +3,23 @@ import { HttpHeaders, HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 
 @Injectable()
-export class OcrService {
+export class AzureOcrService {
   constructor(private http: HttpClient) {}
 
-  public processImageWithOcr(image: any): Observable<any> {
+  public processImageWithOcr(image: File): Observable<any> {
     let url =
       "https://uksouth.api.cognitive.microsoft.com/vision/v1.0/ocr?language=pl";
-    let options = {
+    
+      let options = {
       headers: new HttpHeaders({
         "content-Typ": "multipart/form-data",
         "Ocp-Apim-Subscription-Key": "d82dea103d044a0883812b1384a71fcc"
       })
     };
-    let fd: FormData = new FormData();
-    fd.append("file", image);
 
-    return this.http.post(url, fd, options);
+    let formData: FormData = new FormData();    
+    formData.append("file", image);
+
+    return this.http.post(url, formData, options);
   }
 }

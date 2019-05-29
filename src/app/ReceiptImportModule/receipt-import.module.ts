@@ -4,8 +4,9 @@ import { ReceiptImportComponent } from './receipt-import/receipt-import.componen
 import { HistoryComponent } from './history/history.component';
 import { DictionariesComponent } from './dictionaries/dictionaries.component';
 import { ImageFileService } from './Services/image-file.service';
-import { OcrService } from './Services/ocr.service';
+import { AzureOcrService } from './Services/azure-ocr.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ReceiptProcessorService } from './Services/receipt-processor.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   providers: [
     ImageFileService,
-    OcrService
+    AzureOcrService,
+    ReceiptProcessorService
   ]
 })
 export class ReceiptImportModule { }
