@@ -1,21 +1,20 @@
 import { Component, OnInit } from "@angular/core";
-import { ImageFileService } from "../Services/image-file.service";
-import { AzureOcrService } from "../Services/azure-ocr.service";
-import { RecognizedText } from 'src/app/interfaces/recognized-text';
-import { ReceiptProcessorService } from '../Services/receipt-processor.service';
+import { AzureOcrService } from "../../Services/azure-ocr.service";
+import { OcrResult } from '../../interfaces/ocr-result';
+import { ImageFileService } from '../../Services/image-file.service';
 
 @Component({
   templateUrl: "./receipt-import.component.html",
   styleUrls: ["./receipt-import.component.css"]
 })
 export class ReceiptImportComponent implements OnInit {
-  public selectedImage;
+
   public file: File;
+  public ocrResult: OcrResult;
 
   constructor(
     private fileService: ImageFileService,
-    private ocrService: AzureOcrService,
-    private receiptProcessor: ReceiptProcessorService
+    private ocrService: AzureOcrService
   ) {}
 
   ngOnInit() {
@@ -24,7 +23,7 @@ export class ReceiptImportComponent implements OnInit {
 
   public onFileSelected(file) {
     if (!file) return;
-
+    
     let errorMessage = this.fileService.validateImageFile(file);
     if (errorMessage != "") {
       alert(errorMessage);
@@ -32,10 +31,6 @@ export class ReceiptImportComponent implements OnInit {
     }
 
     this.file = file;
-
-    this.fileService.convertToDataUrl(file).subscribe(x => {
-      this.selectedImage = x;
-    });
   }
 
   public onSubmit() {
@@ -44,10 +39,8 @@ export class ReceiptImportComponent implements OnInit {
 
     this.ocrService.processImageWithOcr(this.file).subscribe(
       res => {
-        let recognizedText: RecognizedText = res;
-        
-        //process text        
-        this.receiptProcessor.retriveGeneralData(res);
+        this.ocrResult = res;
+        console.log(this.ocrResult);               
       },
       err => {
         console.log(err);

@@ -1,6 +1,6 @@
 import { Region } from './region';
 
-export interface RecognizedText {
+export interface OcrResult {
     language: string;
     textAngle: number;
     orientation: string;
