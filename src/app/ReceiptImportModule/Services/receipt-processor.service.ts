@@ -19,26 +19,7 @@ export class ReceiptProcessorService {
     
   }
 
-  public convertToLines(ocrResult: OcrResult): string[] {
-    
-    let ret: Word[] = [];
-
-    ocrResult.regions.map((reg: Region) => {
-      
-      reg.lines.map((ln: TextLine) => {
-        
-       let temp = ln.words.reduce((total, curr) => {
-        total.text = total.text.concat(' ') ;
-
-        let txt = total.text.concat(curr.text);
-         
-          return {text: txt, boundingBox: ''};
-        });
-
-        ret.push(temp);
-      });
-    });
-
+  public convertToLines(ocrResult: OcrResult): string[] {     
     return [];
   }
 }
