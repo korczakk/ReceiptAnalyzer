@@ -6,28 +6,38 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.WindowsAzure.Storage;
+
 using Newtonsoft.Json;
 
 namespace ImageUploadFunction
 {
     public static class Function1
     {
-        [FunctionName("Function1")]
+        [FunctionName("AddImageFile")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            string name = req.Query["name"];
-
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+            ImageFile data = JsonConvert.DeserializeObject<ImageFile>(requestBody);
 
-            return name != null
-                ? (ActionResult)new OkObjectResult($"Hello, {name}")
-                : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+            //convert from Base64 to file
+            byte[] bytes = Convert.FromBase64String(data.FileContent);
+
+            //store in Azure Blob
+
+
+            return new OkObjectResult("OK");
+        }
+
+        static private Uri UploadFileToStorage(byte[] bytes)
+        {
+          CloudStorageAccount storageAccount = CloudStorageAccount.Parse("");
+
+          return new Uri("");
         }
     }
 }
