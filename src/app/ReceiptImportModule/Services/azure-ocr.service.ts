@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { HttpHeaders, HttpClient, HttpResponse } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
+import { HttpParamsOptions } from '@angular/common/http/src/params';
 
 @Injectable()
 export class AzureOcrService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   public processImageWithOcr(image: File): Observable<any> {
     let subject = new Subject();
@@ -17,15 +18,8 @@ export class AzureOcrService {
 
           this.sendImageToOcrService(imageUri).subscribe(
 
-            ocrResult => {
-              this.getOcrResult(ocrResult).subscribe(
-                textResult => {
-
-                },
-                error => {
-                  console.log(error);
-                }
-              );
+            processedImage => {
+              console.log("location: " + processedImage.headers.get('operation-location'));
             },
             error => {
               console.log(error);
@@ -43,18 +37,19 @@ export class AzureOcrService {
     return subject.asObservable();
   }
 
-  private sendImageToOcrService(image): Observable<any> {
+  private sendImageToOcrService(imageUrl): Observable<any> {
     let url =
-      "https://uksouth.api.cognitive.microsoft.com/vision/v1.0/recognizeText?handwriting=true";
+      "https://uksouth.api.cognitive.microsoft.com/vision/v2.0/read/core/asyncBatchAnalyze";
 
     let options = {
+      observe: 'response' as 'body',
       headers: new HttpHeaders({
-        "content-Typ": "application/octet-stream",
-        "Ocp-Apim-Subscription-Key": "d82dea103d044a0883812b1384a71fcc"
-      })
+        "content-Typ": "application/json",
+        "Ocp-Apim-Subscription-Key": "d82dea103d044a0883812b1384a71fcc"        
+      })      
     };
 
-    return this.http.post(url, image, options);
+    return this.http.post(url, imageUrl, options);
   }
 
   private getOcrResult(operationId: string) {
@@ -77,14 +72,14 @@ export class AzureOcrService {
 
   private saveToAzureBlob(dataUrl: string, fileName: string, fileType: string): Observable<object> {
 
-    let base64: string = dataUrl.substr(dataUrl.indexOf("base") - 1);
+    let base64: string = dataUrl.substr(dataUrl.indexOf("base64") + 7);
     let url = 'https://receiptanalyzerfunctions.azurewebsites.net/api/AddImageFile?code=TwVlL/eb5ekF09IvztG61cOo8walTosG9ypTnVKi96Qy2QCiAnHyYA==';
-    
+
     let object = {
-      fileType: fileType,
-      fileContent: base64
+      FileType: fileType,
+      FileContent: base64
     };
-    
-    return this.http.post(url, object);
+
+    return this.http.post(url, JSON.stringify(object));
   }
 }

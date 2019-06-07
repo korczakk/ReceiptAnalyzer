@@ -36,7 +36,7 @@ namespace ImageUploadFunction
             //store in Azure Blob
             string fileUri = await UploadFileToStorage(file);
 
-            return new OkObjectResult(fileUri);
+            return new JsonResult(new {url = fileUri});
         }
 
         static private async Task<string> UploadFileToStorage(ImageFile file)
