@@ -10,20 +10,35 @@ export class AzureOcrService {
     let subject = new Subject();
 
     let reader = new FileReader();
-    reader.onload = (_event) => {
+    reader.onload = _event => {
 
+      this.saveToAzureBlob(reader.result as string, image.name, image.type).subscribe(
+        imageUri => {
 
-    this.sendImageToOcrService(reader.result).subscribe(
-      result => {
-        this.getOcrResult(result);
-      },
-      error => {
-        console.log(error);
-      });
+          this.sendImageToOcrService(imageUri).subscribe(
 
+            ocrResult => {
+              this.getOcrResult(ocrResult).subscribe(
+                textResult => {
+
+                },
+                error => {
+                  console.log(error);
+                }
+              );
+            },
+            error => {
+              console.log(error);
+            }
+          );
+        },
+        error => {
+          console.log(error);
+        }
+      );
     };
 
-    reader.readAsArrayBuffer(image);
+    reader.readAsDataURL(image);
 
     return subject.asObservable();
   }
@@ -39,7 +54,6 @@ export class AzureOcrService {
       })
     };
 
-
     return this.http.post(url, image, options);
   }
 
@@ -52,15 +66,25 @@ export class AzureOcrService {
       })
     };
 
-    this.http.get(url, options).subscribe(
-      (result: any) => {
-        if (result.status == 'Succeeded') {
-          console.log(result);
-        }
-        else if (result.status == 'Running') {
-          this.getOcrResult(operationId);
-        }
+    this.http.get(url, options).subscribe((result: any) => {
+      if (result.status == "Succeeded") {
+        console.log(result);
+      } else if (result.status == "Running") {
+        this.getOcrResult(operationId);
       }
-    )
+    });
+  }
+
+  private saveToAzureBlob(dataUrl: string, fileName: string, fileType: string): Observable<object> {
+
+    let base64: string = dataUrl.substr(dataUrl.indexOf("base") - 1);
+    let url = 'https://receiptanalyzerfunctions.azurewebsites.net/api/AddImageFile?code=TwVlL/eb5ekF09IvztG61cOo8walTosG9ypTnVKi96Qy2QCiAnHyYA==';
+    
+    let object = {
+      fileType: fileType,
+      fileContent: base64
+    };
+    
+    return this.http.post(url, object);
   }
 }
