@@ -1,14 +1,15 @@
 import { Injectable } from "@angular/core";
 import { HttpHeaders, HttpClient, HttpResponse } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
-import { HttpParamsOptions } from '@angular/common/http/src/params';
+import { OcrRecognitionResult } from '../interfaces/ocr-recognition-result';
 
 @Injectable()
 export class AzureOcrService {
   constructor(private http: HttpClient) { }
 
-  public processImageWithOcr(image: File): Observable<any> {
-    let subject = new Subject();
+  private subject = new Subject<OcrRecognitionResult>();
+
+  public processImageWithOcr(image: File): Observable<OcrRecognitionResult> {
 
     let reader = new FileReader();
     reader.onload = _event => {
@@ -19,7 +20,9 @@ export class AzureOcrService {
           this.sendImageToOcrService(imageUri).subscribe(
 
             processedImage => {
-              console.log("location: " + processedImage.headers.get('operation-location'));
+              let ocrResultLocation = processedImage.headers.get('operation-location');
+
+              this.getOcrResult(ocrResultLocation);
             },
             error => {
               console.log(error);
@@ -34,12 +37,15 @@ export class AzureOcrService {
 
     reader.readAsDataURL(image);
 
-    return subject.asObservable();
+    return this.subject.asObservable();
   }
 
+  /**
+   * Sends POST request to Azure Cognitive services with image URL to initiate OCR process.
+   * In return it gets URI to get final result.
+   */
   private sendImageToOcrService(imageUrl): Observable<any> {
-    let url =
-      "https://uksouth.api.cognitive.microsoft.com/vision/v2.0/read/core/asyncBatchAnalyze";
+    let url = "https://uksouth.api.cognitive.microsoft.com/vision/v1.0/recognizeText";
 
     let options = {
       observe: 'response' as 'body',
@@ -52,8 +58,10 @@ export class AzureOcrService {
     return this.http.post(url, imageUrl, options);
   }
 
-  private getOcrResult(operationId: string) {
-    let url = `https://uksouth.api.cognitive.microsoft.com/vision/v1.0/textOperations/${operationId}`;
+  /** 
+    Gets final result of OCR process
+  */
+  private getOcrResult(operationLocation: string) {
 
     let options = {
       headers: new HttpHeaders({
@@ -61,15 +69,18 @@ export class AzureOcrService {
       })
     };
 
-    this.http.get(url, options).subscribe((result: any) => {
+    this.http.get(operationLocation, options).subscribe((result: any) => {
       if (result.status == "Succeeded") {
-        console.log(result);
+        this.subject.next(result.recognitionResult);
       } else if (result.status == "Running") {
-        this.getOcrResult(operationId);
+        this.getOcrResult(operationLocation);
       }
     });
   }
 
+  /**
+   * Saves image file into Azure blob storage and retrives its URI
+   */
   private saveToAzureBlob(dataUrl: string, fileName: string, fileType: string): Observable<object> {
 
     let base64: string = dataUrl.substr(dataUrl.indexOf("base64") + 7);

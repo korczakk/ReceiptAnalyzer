@@ -1,6 +1,7 @@
 import { Word } from './word';
 
 export interface TextLine {
-    boundingBox: string;
+    boundingBox: number[];
+    text: string;
     words: Word[];
 }

@@ -1,4 +1,5 @@
 export interface Word {
-    boundingBox: string;
+    boundingBox: number[];
     text: string;
+    confidence: string;
 }

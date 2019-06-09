@@ -1,25 +1,23 @@
 import { Injectable } from '@angular/core';
-import { OcrResult } from '../interfaces/ocr-result';
-import { TextLine } from '../interfaces/text-line';
-import { Region } from '../interfaces/region';
-import { Word } from '../interfaces/word';
+import { OcrRecognitionResult } from '../interfaces/ocr-recognition-result';
+
 
 @Injectable()
 export class ReceiptProcessorService {
 
   constructor() { }
 
-  public retriveGeneralData(receiptText: OcrResult) {
+  public retriveGeneralData(receiptText: OcrRecognitionResult) {
     //picks data about shop and shopping date
 
   }
 
-  public retriveProductsDetails(receiptText: OcrResult) {
+  public retriveProductsDetails(receiptText: OcrRecognitionResult) {
     //wyciąga wszystkie produkty
     
   }
 
-  public convertToLines(ocrResult: OcrResult): string[] {     
+  public convertToLines(ocrResult: OcrRecognitionResult): string[] {     
     return [];
   }
 }
