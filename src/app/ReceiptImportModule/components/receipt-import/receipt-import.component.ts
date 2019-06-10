@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { AzureOcrService } from "../../Services/azure-ocr.service";
 import { ImageFileService } from '../../Services/image-file.service';
 import { OcrRecognitionResult } from '../../interfaces/ocr-recognition-result';
+import { AzureOcrServiceBase } from '../../interfaces/AzureOcrServiceBase';
 
 @Component({
   templateUrl: "./receipt-import.component.html",
@@ -14,7 +14,7 @@ export class ReceiptImportComponent implements OnInit {
 
   constructor(
     private fileService: ImageFileService,
-    private ocrService: AzureOcrService
+    private ocrService: AzureOcrServiceBase
   ) {}
 
   ngOnInit() {

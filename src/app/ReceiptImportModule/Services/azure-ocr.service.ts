@@ -1,11 +1,14 @@
 import { Injectable } from "@angular/core";
-import { HttpHeaders, HttpClient, HttpResponse } from "@angular/common/http";
+import { HttpHeaders, HttpClient } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
 import { OcrRecognitionResult } from '../interfaces/ocr-recognition-result';
+import { AzureOcrServiceBase } from '../interfaces/AzureOcrServiceBase';
 
 @Injectable()
-export class AzureOcrService {
-  constructor(private http: HttpClient) { }
+export class AzureOcrService extends AzureOcrServiceBase {
+  constructor(private http: HttpClient) {
+    super();
+   }
 
   private subject = new Subject<OcrRecognitionResult>();
 

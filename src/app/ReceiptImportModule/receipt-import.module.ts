@@ -4,18 +4,20 @@ import { ReceiptImportComponent } from './components/receipt-import/receipt-impo
 import { HistoryComponent } from './components/history/history.component';
 import { DictionariesComponent } from './components/dictionaries/dictionaries.component';
 import { ImageFileService } from './Services/image-file.service';
-import { AzureOcrService } from './Services/azure-ocr.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ReceiptProcessorService } from './Services/receipt-processor.service';
 import { ImagePreviewComponent } from './components/image-preview/image-preview.component';
 import { RecognizedTextComponent } from './components/recognized-text/recognized-text.component';
 import { ReceiptFormComponent } from './components/receipt-form/receipt-form.component';
 import { TextLineComponent } from './components/text-line/text-line.component';
+import { AzureOcrServiceMock } from './Mocks/AzureOcrServiceMock';
+import { AzureOcrServiceBase } from './interfaces/AzureOcrServiceBase';
+import { AzureOcrService } from './Services/azure-ocr.service';
 
 @NgModule({
   declarations: [
-    ReceiptImportComponent, 
-    HistoryComponent, 
+    ReceiptImportComponent,
+    HistoryComponent,
     DictionariesComponent, ImagePreviewComponent, RecognizedTextComponent, ReceiptFormComponent, TextLineComponent],
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { TextLineComponent } from './components/text-line/text-line.component';
   ],
   providers: [
     ImageFileService,
-    AzureOcrService,
+    { provide: AzureOcrServiceBase, useClass: AzureOcrServiceMock },
+
     ReceiptProcessorService
   ]
 })
