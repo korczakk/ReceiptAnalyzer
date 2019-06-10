@@ -1,8 +1,10 @@
 .box {
     width: 650px;
-    height: 600px;
+    height: 600px;    
     padding: 5px 5px;
     border: 1px solid  hsl(0, 0%, 78%);;
     margin-bottom: 10px;
     margin-left: 20px;
+    display: inline-block;
+    overflow-y: scroll;
 }

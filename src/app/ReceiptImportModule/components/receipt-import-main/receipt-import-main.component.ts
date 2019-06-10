@@ -4,10 +4,10 @@ import { OcrRecognitionResult } from '../../interfaces/ocr-recognition-result';
 import { AzureOcrServiceBase } from '../../interfaces/AzureOcrServiceBase';
 
 @Component({
-  templateUrl: "./receipt-import.component.html",
-  styleUrls: ["./receipt-import.component.css"]
+  templateUrl: "./receipt-import-main.component.html",
+  styleUrls: ["./receipt-import-main.component.css"]
 })
-export class ReceiptImportComponent implements OnInit {
+export class ReceiptImportMainComponent implements OnInit {
 
   public file: File;
   public ocrResult: OcrRecognitionResult;

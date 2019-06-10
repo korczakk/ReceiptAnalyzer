@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ReceiptProcessorService } from '../../Services/receipt-processor.service';
 import { OcrRecognitionResult } from '../../interfaces/ocr-recognition-result';
 
 @Component({
@@ -9,27 +8,26 @@ import { OcrRecognitionResult } from '../../interfaces/ocr-recognition-result';
 })
 export class RecognizedTextComponent implements OnInit {
 
-  _ocrResult: OcrRecognitionResult;
+  @Input() ocrResult: OcrRecognitionResult;
 
-  get ocrResult() {
-    return this._ocrResult;
-  }
+  // get ocrResult() {
+  //   return this._ocrResult;
+  // }
 
-  @Input()
-  set ocrResult(value: OcrRecognitionResult) {
-    this._ocrResult = value;
+  // @Input()
+  // set ocrResult(value: OcrRecognitionResult) {
+  //   this._ocrResult = value;
 
-    this.createTextRecognizedPreview(value);
-  }
+  //   this.createTextRecognizedPreview(value);
+  // }
 
 
-  constructor(private receiptProcessor: ReceiptProcessorService) { }
+  constructor() { }
 
   ngOnInit() {
   }
 
-  private createTextRecognizedPreview(ocrResult: OcrRecognitionResult) {
-    this.receiptProcessor.convertToLines(ocrResult);
-  }
+  // private createTextRecognizedPreview(ocrResult: OcrRecognitionResult) {
+  // }
 
 }
