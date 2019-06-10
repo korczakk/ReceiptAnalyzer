@@ -9,7 +9,6 @@ import { ReceiptProcessorService } from './Services/receipt-processor.service';
 import { ImagePreviewComponent } from './components/image-preview/image-preview.component';
 import { RecognizedTextComponent } from './components/recognized-text/recognized-text.component';
 import { ReceiptFormComponent } from './components/receipt-form/receipt-form.component';
-import { TextLineComponent } from './components/text-line/text-line.component';
 import { AzureOcrServiceMock } from './Mocks/AzureOcrServiceMock';
 import { AzureOcrServiceBase } from './interfaces/AzureOcrServiceBase';
 import { AzureOcrService } from './Services/azure-ocr.service';
@@ -21,8 +20,7 @@ import { AzureOcrService } from './Services/azure-ocr.service';
     DictionariesComponent, 
     ImagePreviewComponent, 
     RecognizedTextComponent, 
-    ReceiptFormComponent, 
-    TextLineComponent],
+    ReceiptFormComponent],
   imports: [
     CommonModule,
     HttpClientModule
