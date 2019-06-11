@@ -5,6 +5,22 @@
     margin-left: 20px;
     border: 1px solid hsl(0, 0%, 78%);;
     display: inline-block;
-    overflow-y: scroll;
-    
+    overflow-y: scroll;    
+}
+
+.cursor-default {
+    cursor: default;
+}
+
+.buttons-visible:hover span {
+display: inline-block;
+}
+
+.buttons-hidden {    
+    display: none;
+}
+
+.buttons-hidden:hover {
+    color:red;
+    font-size: larger;
 }
