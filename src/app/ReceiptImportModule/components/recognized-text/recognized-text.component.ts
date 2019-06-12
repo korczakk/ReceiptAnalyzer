@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { OcrRecognitionResult } from '../../interfaces/ocr-recognition-result';
+import { ReceiptDataService } from '../../Services/receipt-data.service';
 
 @Component({
   selector: 'app-recognized-text',
@@ -9,25 +10,20 @@ import { OcrRecognitionResult } from '../../interfaces/ocr-recognition-result';
 export class RecognizedTextComponent implements OnInit {
 
   @Input() ocrResult: OcrRecognitionResult;
+  private receiptData: string;
 
-  // get ocrResult() {
-  //   return this._ocrResult;
-  // }
-
-  // @Input()
-  // set ocrResult(value: OcrRecognitionResult) {
-  //   this._ocrResult = value;
-
-  //   this.createTextRecognizedPreview(value);
-  // }
-
-
-  constructor() { }
+  constructor(private receiptDataService: ReceiptDataService) { }
 
   ngOnInit() {
+    this.receiptDataService.receiptData.subscribe(data => {
+      this.receiptData = data;
+    });
   }
 
-  // private createTextRecognizedPreview(ocrResult: OcrRecognitionResult) {
-  // }
+  onBlur() {
+    //DOWOLNY INY EVENT
+    this.receiptDataService.addItem(this.receiptData);
+  }
+
 
 }

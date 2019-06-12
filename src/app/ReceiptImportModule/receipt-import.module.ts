@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import { ReceiptImportMainComponent } from './components/receipt-import-main/receipt-import-main.component';
 import { HistoryComponent } from './components/history/history.component';
 import { DictionariesComponent } from './components/dictionaries/dictionaries.component';
@@ -12,6 +13,7 @@ import { ReceiptFormComponent } from './components/receipt-form/receipt-form.com
 import { AzureOcrServiceMock } from './Mocks/AzureOcrServiceMock';
 import { AzureOcrServiceBase } from './interfaces/AzureOcrServiceBase';
 import { AzureOcrService } from './Services/azure-ocr.service';
+import { ReceiptDataService } from './Services/receipt-data.service';
 
 @NgModule({
   declarations: [
@@ -23,12 +25,14 @@ import { AzureOcrService } from './Services/azure-ocr.service';
     ReceiptFormComponent],
   imports: [
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [
     ImageFileService,
     { provide: AzureOcrServiceBase, useClass: AzureOcrServiceMock },
-    ReceiptProcessorService
+    ReceiptProcessorService,
+    ReceiptDataService
   ]
 })
 export class ReceiptImportModule { }
