@@ -1,19 +1,19 @@
 import { Injectable } from "@angular/core";
-import { OcrRecognitionResult } from "../interfaces/ocr-recognition-result";
+import { IOcrRecognitionResult } from "../interfaces/iocr-recognition-result";
 
 @Injectable()
 export class ReceiptProcessorService {
   constructor() {}
 
-  public retriveReceiptData(recognizedText: OcrRecognitionResult) {
+  public retriveReceiptData(recognizedText: IOcrRecognitionResult) {
     //picks data about shop and shopping date
   }
 
-  public retriveStoreName(recognizedText: OcrRecognitionResult) {}
+  public retriveStoreName(recognizedText: IOcrRecognitionResult) {}
 
-  public retriveTotalAmount(recognizedText: OcrRecognitionResult) {}
+  public retriveTotalAmount(recognizedText: IOcrRecognitionResult) {}
 
-  public retriveProductsDetails(receiptText: OcrRecognitionResult) {
+  public retriveProductsDetails(receiptText: IOcrRecognitionResult) {
     //wyciąga wszystkie produkty
   }
 

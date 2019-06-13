@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
-import { OcrRecognitionResult } from '../interfaces/ocr-recognition-result';
+import { IOcrRecognitionResult } from '../interfaces/iocr-recognition-result';
 import { AzureOcrServiceBase } from '../interfaces/AzureOcrServiceBase';
 
 @Injectable()
@@ -10,9 +10,9 @@ export class AzureOcrService extends AzureOcrServiceBase {
     super();
    }
 
-  private subject = new Subject<OcrRecognitionResult>();
+  private subject = new Subject<IOcrRecognitionResult>();
 
-  public processImageWithOcr(image: File): Observable<OcrRecognitionResult> {
+  public processImageWithOcr(image: File): Observable<IOcrRecognitionResult> {
 
     let reader = new FileReader();
     reader.onload = _event => {

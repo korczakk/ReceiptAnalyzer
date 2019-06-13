@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ImageFileService } from '../../Services/image-file.service';
-import { OcrRecognitionResult } from '../../interfaces/ocr-recognition-result';
+import { IOcrRecognitionResult } from '../../interfaces/iocr-recognition-result';
 import { AzureOcrServiceBase } from '../../interfaces/AzureOcrServiceBase';
 
 @Component({
@@ -10,7 +10,7 @@ import { AzureOcrServiceBase } from '../../interfaces/AzureOcrServiceBase';
 export class ReceiptImportMainComponent implements OnInit {
 
   public file: File;
-  public ocrResult: OcrRecognitionResult;
+  public ocrResult: IOcrRecognitionResult;
 
   constructor(
     private fileService: ImageFileService,

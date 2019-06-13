@@ -14,6 +14,7 @@ import { AzureOcrServiceMock } from './Mocks/AzureOcrServiceMock';
 import { AzureOcrServiceBase } from './interfaces/AzureOcrServiceBase';
 import { AzureOcrService } from './Services/azure-ocr.service';
 import { ReceiptDataService } from './Services/receipt-data.service';
+import { DictionariesService } from './Services/dictionaries.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ReceiptDataService } from './Services/receipt-data.service';
     ImageFileService,
     { provide: AzureOcrServiceBase, useClass: AzureOcrServiceMock },
     ReceiptProcessorService,
-    ReceiptDataService
+    ReceiptDataService,
+    DictionariesService
   ]
 })
 export class ReceiptImportModule { }

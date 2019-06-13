@@ -1,3 +1,8 @@
-<p>
-  <input type="text" [(ngModel)]="receiptData" (blur)="onBlur()"/>
-</p>
+<form>
+    <div class="form-group">
+        <label for="store">Nazwa sklepu</label>
+        <select id="store" name="store" [(ngModel)]="receiptData.store" class="form-control">
+            <option></option>
+        </select>
+    </div>
+</form>

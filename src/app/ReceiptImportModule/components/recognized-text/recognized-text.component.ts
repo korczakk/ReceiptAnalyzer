@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { OcrRecognitionResult } from '../../interfaces/ocr-recognition-result';
+import { IOcrRecognitionResult } from '../../interfaces/iocr-recognition-result';
 import { ReceiptDataService } from '../../Services/receipt-data.service';
+import { IReceipt } from '../../interfaces/ireceipt';
 
 @Component({
   selector: 'app-recognized-text',
@@ -9,8 +10,8 @@ import { ReceiptDataService } from '../../Services/receipt-data.service';
 })
 export class RecognizedTextComponent implements OnInit {
 
-  @Input() ocrResult: OcrRecognitionResult;
-  private receiptData: string;
+  @Input() ocrResult: IOcrRecognitionResult;
+  private receiptData: IReceipt;
 
   constructor(private receiptDataService: ReceiptDataService) { }
 
@@ -21,7 +22,7 @@ export class RecognizedTextComponent implements OnInit {
   }
 
   onBlur() {
-    //DOWOLNY INY EVENT
+    //DOWOLNY INNY EVENT
     this.receiptDataService.addItem(this.receiptData);
   }
 

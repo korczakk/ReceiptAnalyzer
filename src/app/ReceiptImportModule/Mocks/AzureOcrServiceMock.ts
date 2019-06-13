@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { AzureOcrServiceBase } from '../interfaces/AzureOcrServiceBase';
-import { OcrRecognitionResult } from '../interfaces/ocr-recognition-result';
+import { IOcrRecognitionResult } from '../interfaces/iocr-recognition-result';
 
 
 @Injectable()
@@ -2449,10 +2449,10 @@ export class AzureOcrServiceMock extends AzureOcrServiceBase {
    };
 
    public processImageWithOcr(image: File): Observable<any> {
-      let subject = new Subject<OcrRecognitionResult>();
+      let subject = new Subject<IOcrRecognitionResult>();
 
       setTimeout(() => {
-         subject.next(this.returnData as OcrRecognitionResult);
+         subject.next(this.returnData as IOcrRecognitionResult);
       }, 1000);
       
 

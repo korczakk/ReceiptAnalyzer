@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ReceiptDataService } from "../../Services/receipt-data.service";
+import { IReceipt } from '../../interfaces/ireceipt';
 
 @Component({
   selector: "app-receipt-form",
@@ -7,16 +8,16 @@ import { ReceiptDataService } from "../../Services/receipt-data.service";
   styleUrls: ["./receipt-form.component.css"]
 })
 export class ReceiptFormComponent implements OnInit {
-  private _receiptData: string;
+  private _receiptData: IReceipt;
 
-  set receiptData(val: string) {
+  set receiptData(val: IReceipt) {
     this._receiptData = val;
     this.receiptDataService.addItem(val);
     console.log('SET');
   }
 
   get receiptData() {
-    return this._receiptData;
+    return this._receiptData ? this._receiptData : {} as IReceipt;
     console.log('GET');
   }
 
@@ -26,9 +27,5 @@ export class ReceiptFormComponent implements OnInit {
     this.receiptDataService.receiptData.subscribe(data => {
       this._receiptData = data;
     });
-  }
-
-  public onBlur($event) {
-   // this.receiptDataService.addItem('kamil');
   }
 }
