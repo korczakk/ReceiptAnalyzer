@@ -27,5 +27,24 @@ export class ReceiptFormComponent implements OnInit {
     this.receiptDataService.receiptData.subscribe(data => {
       this._receiptData = data;
     });
+
+    this.receiptDataService.addItem({
+      store: {storeName: "CCC"},
+      shoppingDate: new Date("2019-01-01"),
+      totalAmount: 1,
+      items: [{
+        productName: "prod1",
+        productsQuantity: 1,
+        productPrice: 10,
+        productCategory: {categoryName: "kat1"}
+      },
+      {
+        productName: "prod2",
+        productsQuantity: 11,
+        productPrice: 20,
+        productCategory: {categoryName: "kat2"}
+      }]
+
+    });
   }
 }

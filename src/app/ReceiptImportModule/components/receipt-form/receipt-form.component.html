@@ -1,8 +1,24 @@
-<form>
+<form >
     <div class="form-group">
         <label for="store">Nazwa sklepu</label>
         <select id="store" name="store" [(ngModel)]="receiptData.store" class="form-control">
             <option></option>
         </select>
+    </div>
+    <div class="form-group">
+        <label for="receiptDate">Data paragonu</label>
+        <input type="text" id="receiptDate" name="shoppingDate" [(ngModel)]="receiptData.shoppingDate" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label for="totalAmount">Wartość paragonu</label>
+        <input type="text" id="totalAmount" name="totalAmount" [(ngModel)]="receiptData.totalAmount" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label for="items">Produkty</label>
+        <ul type="text" id="items" class="form-control">
+            <li *ngFor="let item of receiptData.items" >
+                <input type="text" name="item.productName" [(ngModel)]="item.productName"/>
+            </li>
+        </ul>
     </div>
 </form>
