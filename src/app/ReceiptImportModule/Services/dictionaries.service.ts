@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { IStore } from '../interfaces/istore';
 import { HttpClient } from '@angular/common/http';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class DictionariesService {
 
   constructor(private http: HttpClient) { }

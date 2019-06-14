@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ReceiptDataService } from "../../Services/receipt-data.service";
 import { IReceipt } from '../../interfaces/ireceipt';
+import { IProductCategory } from '../../interfaces/iproduct-category';
 
 @Component({
   selector: "app-receipt-form",
@@ -16,12 +17,14 @@ export class ReceiptFormComponent implements OnInit {
     console.log('SET');
   }
 
-  get receiptData() {
+  get receiptData(): IReceipt {
     return this._receiptData ? this._receiptData : {} as IReceipt;
     console.log('GET');
   }
 
-  constructor(private receiptDataService: ReceiptDataService) {}
+  public productCategories: IProductCategory;
+
+  constructor(private receiptDataService: ReceiptDataService) { }
 
   ngOnInit() {
     this.receiptDataService.receiptData.subscribe(data => {
@@ -29,22 +32,23 @@ export class ReceiptFormComponent implements OnInit {
     });
 
     this.receiptDataService.addItem({
-      store: {storeName: "CCC"},
-      shoppingDate: new Date("2019-01-01"),
-      totalAmount: 1,
+      store: { storeName: "CCC" },
+      shoppingDate: "2019-02-01",
+      totalAmount: 10.02,
       items: [{
         productName: "prod1",
         productsQuantity: 1,
         productPrice: 10,
-        productCategory: {categoryName: "kat1"}
+        productCategory: { categoryName: "kat1" }
       },
       {
         productName: "prod2",
-        productsQuantity: 11,
+        productsQuantity: 2,
         productPrice: 20,
-        productCategory: {categoryName: "kat2"}
+        productCategory: { categoryName: "kat2" }
       }]
 
     });
   }
+
 }

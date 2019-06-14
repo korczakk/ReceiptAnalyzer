@@ -1,23 +1,30 @@
-<form >
+<form class="receipt-form">
     <div class="form-group">
         <label for="store">Nazwa sklepu</label>
-        <select id="store" name="store" [(ngModel)]="receiptData.store" class="form-control">
+        <select id="store" name="store" [(ngModel)]="receiptData.store" class="form-control w-50">
             <option></option>
         </select>
     </div>
     <div class="form-group">
         <label for="receiptDate">Data paragonu</label>
-        <input type="text" id="receiptDate" name="shoppingDate" [(ngModel)]="receiptData.shoppingDate" class="form-control"/>
+        <input type="date" id="receiptDate" name="shoppingDate" [(ngModel)]="receiptData.shoppingDate" class="form-control w-50"/>
     </div>
     <div class="form-group">
         <label for="totalAmount">Wartość paragonu</label>
-        <input type="text" id="totalAmount" name="totalAmount" [(ngModel)]="receiptData.totalAmount" class="form-control"/>
+        <input type="number" id="totalAmount" name="totalAmount" [(ngModel)]="receiptData.totalAmount" class="form-control w-50"/>
     </div>
-    <div class="form-group">
+    <div class="">
         <label for="items">Produkty</label>
-        <ul type="text" id="items" class="form-control">
-            <li *ngFor="let item of receiptData.items" >
-                <input type="text" name="item.productName" [(ngModel)]="item.productName"/>
+        <ul class="list-group">
+            <li *ngFor="let itm of receiptData.items"  class="list-group-item list-group-item-light d-flex px-0">                
+                 <input type="text" name="productName" [ngModelOptions]="{standalone:true}"  [(ngModel)]="itm.productName" class="form-control mr-1"/>
+                 <input type="number" name="productsQuantity" [ngModelOptions]="{standalone:true}"  [(ngModel)]="itm.productsQuantity" class="form-control quantity-control mr-1"/>
+                <input type="number" name="productPrice" [ngModelOptions]="{standalone:true}"  [(ngModel)]="itm.productPrice" class="form-control totalAmount-control mr-1"/>
+                <select name="productCategory" [(ngModel)]="itm.productCategory" class="form-control ">
+                    <option *ngFor="let category of productCategories">{{category.categoryName}}</option>
+                    <option>KAtegoria 1</option>
+                    <option>KAtegoria 2</option>
+                </select>
             </li>
         </ul>
     </div>
