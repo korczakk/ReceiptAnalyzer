@@ -1,3 +1,7 @@
+using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -9,36 +13,33 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using DataAccessAPI.Model;
 
+using Microsoft.Extensions.Primitives;
+
+using Newtonsoft.Json;
+
 namespace DataAccessAPI
 {
   public static class GetStores
   {
     [FunctionName("GetStores")]
-    public static async Task<IActionResult> Run(
+    public static async Task<HttpResponseMessage> Run(
         [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
         ILogger log)
     {
-      log.LogInformation("C# HTTP trigger function processed a request.");
 
-      string accountName = req.Query["accountname"];
-      string key = req.Query["key"];
-      TableQuerySegment<Store> result;
-      try
+      var account = CloudStorageAccount.Parse(
+        "DefaultEndpointsProtocol=https;AccountName=receiptanalyzerstore;AccountKey=zFhG+sVVhi/H5qqxvmAbqEvhfkPLQ6Q8VomcTuvNMy9+FlIkMI4SaAycV5urs6bsKxEX+1qsw03ardOwjXdrNQ==;EndpointSuffix=core.windows.net");
+
+      var tableClient = account.CreateCloudTableClient();
+      var table = tableClient.GetTableReference("Stores");
+
+      TableQuerySegment result = await table.ExecuteQuerySegmentedAsync(new TableQuery(), null);
+      
+
+      return new HttpResponseMessage(HttpStatusCode.OK)
       {
-        var credentials = new StorageCredentials(accountName, key);
-        var account = new CloudStorageAccount(credentials, true);
-        var tableClient = account.CreateCloudTableClient();
-        var table = tableClient.GetTableReference("Stores");
-         result = await table.ExecuteQuerySegmentedAsync<Store>(new TableQuery<Store>(), null);
-
-      }
-      catch (System.Exception e)
-      {
-
-        throw e;
-      }
-
-      return new OkObjectResult(result.Results);
+        Content = new StringContent(JsonConvert.SerializeObject(result.Results.ToList()))
+      };
     }
   }
 }
