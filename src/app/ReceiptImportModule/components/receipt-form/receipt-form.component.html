@@ -3,6 +3,7 @@
         <label for="store">Nazwa sklepu</label>
         <select id="store" name="store" [(ngModel)]="receiptData.store" class="form-control w-50">
             <option></option>
+            <option *ngFor="let store of stores" >{{store.StoreName}}</option>
         </select>
     </div>
     <div class="form-group">

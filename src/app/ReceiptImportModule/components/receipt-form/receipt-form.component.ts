@@ -2,6 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { ReceiptDataService } from "../../Services/receipt-data.service";
 import { IReceipt } from '../../interfaces/ireceipt';
 import { IProductCategory } from '../../interfaces/iproduct-category';
+import { DictionariesService } from '../../Services/dictionaries.service';
+import { IStore } from '../../interfaces/istore';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: "app-receipt-form",
@@ -23,8 +26,11 @@ export class ReceiptFormComponent implements OnInit {
   }
 
   public productCategories: IProductCategory;
+  public stores: IStore[];
 
-  constructor(private receiptDataService: ReceiptDataService) { }
+  constructor(
+    private receiptDataService: ReceiptDataService,
+    private dictionariesService: DictionariesService) { }
 
   ngOnInit() {
     this.receiptDataService.receiptData.subscribe(data => {
@@ -32,7 +38,7 @@ export class ReceiptFormComponent implements OnInit {
     });
 
     this.receiptDataService.addItem({
-      store: { storeName: "CCC" },
+      store: { StoreName: "CCC" },
       shoppingDate: "2019-02-01",
       totalAmount: 10.02,
       items: [{
@@ -49,6 +55,13 @@ export class ReceiptFormComponent implements OnInit {
       }]
 
     });
+
+    this.dictionariesService.getStores().subscribe(
+      data => {
+        this.stores = data;
+      }
+    )
+
   }
 
 }

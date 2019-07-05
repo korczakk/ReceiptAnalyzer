@@ -1,3 +1,3 @@
 export interface IStore {
-    storeName: string;
+    StoreName: string;
 }
