@@ -1,23 +1,24 @@
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+using System;
+using System.IO;
 using System.Threading.Tasks;
-using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-
-using Microsoft.WindowsAzure.Storage.Table;
-
 using Newtonsoft.Json;
+using System.Net.Http;
+using System.Net;
+using Microsoft.WindowsAzure.Storage.Table;
 using DataAccessAPI.Model;
+using System.Linq;
+using System.Text;
 
 namespace DataAccessAPI
 {
-  public static class GetStores
+  public static class GetCategories
   {
-    [FunctionName("GetStores")]
+    [FunctionName("GetCategories")]
     public static async Task<HttpResponseMessage> Run(
         [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
         ILogger log,
@@ -30,7 +31,7 @@ namespace DataAccessAPI
           Content = new StringContent("Incorrect connection string to Azure Storage Account.")
         };
 
-      TableQuerySegment<Store> result = await StorageHelper.GetDataFromTable<Store>("Stores", cn);
+      TableQuerySegment<ProductCategory> result = await StorageHelper.GetDataFromTable<ProductCategory>("Categories", cn);
 
       return new HttpResponseMessage(HttpStatusCode.OK)
       {

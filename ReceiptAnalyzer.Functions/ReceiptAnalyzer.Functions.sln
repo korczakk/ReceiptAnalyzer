@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageUploadFunction", "ImageUploadFunction\ImageUploadFunction.csproj", "{25CA2ADC-E057-40A8-8995-5266DF8DC715}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessAPI", "DataAccessAPI\DataAccessAPI.csproj", "{4415E2BF-5951-4C4B-8E6E-767990FEA5F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessAPI", "DataAccessAPI\DataAccessAPI.csproj", "{4415E2BF-5951-4C4B-8E6E-767990FEA5F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

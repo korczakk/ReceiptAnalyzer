@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable, Subject } from "rxjs";
+import { Observable, BehaviorSubject } from "rxjs";
 import { ReceiptProcessorService } from "./receipt-processor.service";
 import { IReceipt } from '../interfaces/ireceipt';
 
@@ -7,7 +7,7 @@ import { IReceipt } from '../interfaces/ireceipt';
 export class ReceiptDataService {
   constructor(private receiptProcessor: ReceiptProcessorService) {}
 
-  private subject: Subject<IReceipt> = new Subject<IReceipt>();
+  private subject: BehaviorSubject<IReceipt> = new BehaviorSubject<IReceipt>({} as IReceipt);
   public receiptData: Observable<IReceipt> = this.subject.asObservable();
   
   public addItem(item: IReceipt) {

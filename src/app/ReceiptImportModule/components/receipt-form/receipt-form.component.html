@@ -21,10 +21,9 @@
                  <input type="text" name="productName" [ngModelOptions]="{standalone:true}"  [(ngModel)]="itm.productName" class="form-control mr-1"/>
                  <input type="number" name="productsQuantity" [ngModelOptions]="{standalone:true}"  [(ngModel)]="itm.productsQuantity" class="form-control quantity-control mr-1"/>
                 <input type="number" name="productPrice" [ngModelOptions]="{standalone:true}"  [(ngModel)]="itm.productPrice" class="form-control totalAmount-control mr-1"/>
-                <select name="productCategory" [(ngModel)]="itm.productCategory" class="form-control ">
-                    <option *ngFor="let category of productCategories">{{category.categoryName}}</option>
-                    <option>KAtegoria 1</option>
-                    <option>KAtegoria 2</option>
+                <select name="productCategory" [ngModelOptions]="{standalone:true}" [(ngModel)]="itm.productCategory" class="form-control ">
+                    <option></option>
+                    <option *ngFor="let category of productCategories"  [ngValue]="category.CategoryName">{{category.CategoryName}}</option>
                 </select>
             </li>
         </ul>

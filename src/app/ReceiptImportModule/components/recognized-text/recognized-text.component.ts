@@ -21,10 +21,29 @@ export class RecognizedTextComponent implements OnInit {
     });
   }
 
-  onBlur() {
-    //DOWOLNY INNY EVENT
-    this.receiptDataService.addItem(this.receiptData);
-  }
+  // clickplus() {
+  //   //DOWOLNY INNY EVENT
+  //  // this.receiptDataService.addItem(this.receiptData);
+
+  //  this.receiptDataService.addItem({
+  //     store: { StoreName: "CCC" },
+  //     shoppingDate: "2019-02-01",
+  //     totalAmount: 10.02,
+  //     items: [{
+  //       productName: "prod1",
+  //       productsQuantity: 1,
+  //       productPrice: 10,
+  //       productCategory: { CategoryName: "Leki" }
+  //     },
+  //     {
+  //       productName: "prod2",
+  //       productsQuantity: 2,
+  //       productPrice: 20,
+  //       productCategory: { CategoryName: "Ubrania" }
+  //     }]
+
+  //   });
+  // }
 
 
 }
