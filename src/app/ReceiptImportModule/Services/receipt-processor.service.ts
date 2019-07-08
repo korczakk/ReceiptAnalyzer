@@ -7,23 +7,30 @@ export class ReceiptProcessorService {
 
   private dateFormats: RegExp[] = [
     /\d{4}-\d{2}-\d{2}/,
-    /\d{2}-\d{2}-\d{4}/
+    /\d{2}-\d{2}-\d{4}/,
+    /\d{2}.\d{2}.\d{4}/
   ];
 
   public convertToDateString(date: string): string {
-    let result: RegExpExecArray;
+    let isIncorrectOrder = /\d{2}/;
+    let dateString: string;
 
-    for (let i = 0; i < this.dateFormats.length; i++) {
-      const exp = this.dateFormats[i];
-     
-      result = exp.exec(date)
+    this.dateFormats.map(exp => {     
+      let result = exp.exec(date)
 
       if (result) {
-        break;
-      }
-    }
+        if(isIncorrectOrder.test(result[0])) {
+          let parts = result[0].replace('.', '-').split('-');
 
-    return result ? result[0] : "";
+          dateString = `${parts[2]}-${parts[1]}-${parts[0]}`;
+        }
+        else {
+          dateString = result[0];
+        }
+      }
+    });
+
+    return dateString;
   }
 
   public retriveStoreName(recognizedText: IOcrRecognitionResult) { }

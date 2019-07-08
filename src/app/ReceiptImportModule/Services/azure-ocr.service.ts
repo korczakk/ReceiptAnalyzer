@@ -77,7 +77,11 @@ export class AzureOcrService extends AzureOcrServiceBase {
       if (result.status == "Succeeded") {
         this.subject.next(result.recognitionResult);
       } else if (result.status == "Running") {
-        this.getOcrResult(operationLocation);
+        //Wait 1s to try again
+        setTimeout(() => {
+          this.getOcrResult(operationLocation);
+        }, 1000)
+        
       }
     });
   }
