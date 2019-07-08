@@ -3,7 +3,7 @@
         <label for="store">Nazwa sklepu</label>
         <select id="store" name="store" [(ngModel)]="receiptData.store" class="form-control w-50">
             <option></option>
-            <option *ngFor="let store of stores" >{{store.StoreName}}</option>
+            <option *ngFor="let store of stores" >{{store?.StoreName}}</option>
         </select>
     </div>
     <div class="form-group">
@@ -21,9 +21,9 @@
                  <input type="text" name="productName" [ngModelOptions]="{standalone:true}"  [(ngModel)]="itm.productName" class="form-control mr-1"/>
                  <input type="number" name="productsQuantity" [ngModelOptions]="{standalone:true}"  [(ngModel)]="itm.productsQuantity" class="form-control quantity-control mr-1"/>
                 <input type="number" name="productPrice" [ngModelOptions]="{standalone:true}"  [(ngModel)]="itm.productPrice" class="form-control totalAmount-control mr-1"/>
-                <select name="productCategory" [ngModelOptions]="{standalone:true}" [(ngModel)]="itm.productCategory" class="form-control ">
+                <select name="productCategory" [ngModelOptions]="{standalone:true}" [compareWith]="categoryComparer" [(ngModel)]="itm.productCategory" class="form-control ">
                     <option></option>
-                    <option *ngFor="let category of productCategories"  [ngValue]="category.CategoryName">{{category.CategoryName}}</option>
+                    <option *ngFor="let category of productCategories" [ngValue]="category">{{category.CategoryName}}</option>
                 </select>
             </li>
         </ul>

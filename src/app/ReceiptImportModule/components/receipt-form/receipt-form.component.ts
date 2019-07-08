@@ -20,11 +20,9 @@ export class ReceiptFormComponent implements OnInit {
     console.log('SET');
   }
 
-  get receiptData(): IReceipt {
-    
+  get receiptData(): IReceipt {    
     console.log('GET');
     return this._receiptData;
-
   }
 
   public productCategories: IProductCategory[];
@@ -45,6 +43,12 @@ export class ReceiptFormComponent implements OnInit {
       this._receiptData = data;
     });
 
+    this.dictionariesService.getStores().subscribe(
+      data => {
+        this.stores = data;
+      }
+    );
+
     // this.receiptDataService.addItem({
     //   store: { StoreName: "CCC" },
     //   shoppingDate: "2019-02-01",
@@ -59,17 +63,14 @@ export class ReceiptFormComponent implements OnInit {
     //     productName: "prod2",
     //     productsQuantity: 2,
     //     productPrice: 20,
-    //     productCategory: { CategoryName: "Ubrania" }
+    //     productCategory: { CategoryName: "Zabawki" }
     //   }]
 
-    // });
+    // });d
+  }
 
-    // this.dictionariesService.getStores().subscribe(
-    //   data => {
-    //     this.stores = data;
-    //   }
-    // )
-
+  categoryComparer(a: any, b: any): boolean {
+    return a && b ? a.CategoryName == b.CategoryName : false;
   }
 
 }

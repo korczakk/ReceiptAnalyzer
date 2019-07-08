@@ -68,7 +68,8 @@ export class AzureOcrService extends AzureOcrServiceBase {
 
     let options = {
       headers: new HttpHeaders({
-        "Ocp-Apim-Subscription-Key": "d82dea103d044a0883812b1384a71fcc"
+        "Ocp-Apim-Subscription-Key": "d82dea103d044a0883812b1384a71fcc",
+        "Access-Control-Allow-Origin": "http://localhost:4200"
       })
     };
 
@@ -87,7 +88,7 @@ export class AzureOcrService extends AzureOcrServiceBase {
   private saveToAzureBlob(dataUrl: string, fileName: string, fileType: string): Observable<object> {
 
     let base64: string = dataUrl.substr(dataUrl.indexOf("base64") + 7);
-    let url = 'https://receiptanalyzerfunctions.azurewebsites.net/api/AddImageFile?code=TwVlL/eb5ekF09IvztG61cOo8walTosG9ypTnVKi96Qy2QCiAnHyYA==';
+    let url = 'https://receiptanalyzerimageuploadfunc.azurewebsites.net/api/AddImageFile?code=RYpMapWPaxHZmU3IuJiMMA3AA4I4atICx6MsoV3PXfeiKgqD9n4Yzg==';
 
     let object = {
       FileType: fileType,

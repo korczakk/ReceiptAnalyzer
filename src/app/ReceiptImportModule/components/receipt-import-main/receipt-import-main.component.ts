@@ -10,7 +10,7 @@ import { AzureOcrServiceBase } from '../../interfaces/AzureOcrServiceBase';
 export class ReceiptImportMainComponent implements OnInit {
 
   public file: File;
-  public ocrResult: IOcrRecognitionResult;
+  public ocrResult: IOcrRecognitionResult = {} as IOcrRecognitionResult;
 
   constructor(
     private fileService: ImageFileService,

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReceiptImportComponent } from './receipt-import-main.component';
+import { ReceiptImportMainComponent } from './receipt-import-main.component';
 
 describe('ReceiptImportComponent', () => {
-  let component: ReceiptImportComponent;
-  let fixture: ComponentFixture<ReceiptImportComponent>;
+  let component: ReceiptImportMainComponent;
+  let fixture: ComponentFixture<ReceiptImportMainComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReceiptImportComponent ]
+      declarations: [ ReceiptImportMainComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReceiptImportComponent);
+    fixture = TestBed.createComponent(ReceiptImportMainComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
