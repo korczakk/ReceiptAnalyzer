@@ -6,7 +6,7 @@
             <div class="cursor-default" >{{line.text}}</div>
             <div class="">
                 <span (click)="addShoppingDate(line.text)" class="fas fa-calendar-alt mr-3 buttons-hidden"></span>
-                <span class="fas fa-dollar-sign mr-3 buttons-hidden"></span>
+                <span (click)="addTotalAmount(line.text)" class="fas fa-dollar-sign mr-3 buttons-hidden"></span>
                 <span class="fas fa-plus mr-3 buttons-hidden"></span>
                 <span class="fas fa-list buttons-hidden"></span>
             </div>

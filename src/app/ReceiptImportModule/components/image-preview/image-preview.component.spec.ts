@@ -6,20 +6,4 @@ describe('ImagePreviewComponent', () => {
   let component: ImagePreviewComponent;
   let fixture: ComponentFixture<ImagePreviewComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ImagePreviewComponent ]
-    })
-    .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ImagePreviewComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
 });

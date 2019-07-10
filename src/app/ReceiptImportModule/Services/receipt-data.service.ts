@@ -5,7 +5,7 @@ import { IReceipt } from '../interfaces/ireceipt';
 
 @Injectable()
 export class ReceiptDataService {
-  constructor(private receiptProcessor: ReceiptProcessorService) { }
+  constructor() { }
 
   private _receiptData: IReceipt = {} as IReceipt;
 
@@ -14,16 +14,4 @@ export class ReceiptDataService {
 
   public addItem(item: IReceipt) {
   }
-
-  public setShoppingDate(date: string) {
-    let resultDate = this.receiptProcessor.convertToDateString(date);
-
-    this._receiptData.shoppingDate = resultDate;
-  }
-
-  public setStoreName(name: string) { }
-
-  public setTotalAmount(amount: string) { }
-
-  public updateItem(item: IReceipt) { }
 }

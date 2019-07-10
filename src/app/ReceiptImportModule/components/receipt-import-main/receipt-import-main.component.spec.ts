@@ -6,20 +6,4 @@ describe('ReceiptImportComponent', () => {
   let component: ReceiptImportMainComponent;
   let fixture: ComponentFixture<ReceiptImportMainComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ReceiptImportMainComponent ]
-    })
-    .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ReceiptImportMainComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
 });
