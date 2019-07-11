@@ -67,10 +67,10 @@ export class ReceiptProcessorService {
     if (this.checkIfStringContainsQuantityAndPrice(text) == -1)
       return;
 
-    let quantityExp: RegExp = /\d{1,3}\s?[,|.]\s?\d{1,3}/;
+    let quantityExp: RegExp = /\d{1,3}\s?[,|.]\s?\d{1,3}\s?[x|*]/;
     let result = quantityExp.exec(text);
 
-    return result[0].replace(/\s/g, '').replace(/,/g, '.');
+    return result[0].replace(/\s/g, '').replace(/,/g, '.').replace(/[x|*]/g, '').trim();
   }
 
   /**
@@ -115,6 +115,9 @@ export class ReceiptProcessorService {
   private removeWhiteSpaces(text: string) { }
 
   private checkIfStringContainsQuantityAndPrice(text: string): number {
+    if(!text)
+      return -1;
+    
     let quantityAndPriceExpression: RegExp = /\d{1,3}\s?[,|.]\s?\d{1,3}\s?[x|*]\s?\d+\s?[,|\.]\s?\d{2}/;
 
     return text.search(quantityAndPriceExpression);

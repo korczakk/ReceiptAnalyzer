@@ -77,6 +77,14 @@ console.log(result);
     expect(result).toEqual("10.00");
   });
 
+  it("getQuantity retrives correct value from 'Woda 1,5L 10,00 *12,50'", () => {
+    let service: ReceiptProcessorService = new ReceiptProcessorService();
+
+    let result = service.getQuantity("Woda 1,5L 10,00 *12,50'");
+
+    expect(result).toEqual("10.00");
+  });
+
   it("getProductPrice retrives correct value from 10,00 x 12,50", () => {
     let service: ReceiptProcessorService = new ReceiptProcessorService();
 

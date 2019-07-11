@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { IOcrRecognitionResult } from '../../interfaces/iocr-recognition-result';
 import { ReceiptDataService } from '../../Services/receipt-data.service';
-import { IReceipt } from '../../interfaces/ireceipt';
+import { Receipt } from '../../interfaces/receipt';
 import { ReceiptProcessorService } from '../../Services/receipt-processor.service';
+import { ReceiptItem } from '../../interfaces/receipt-item';
 
 @Component({
   selector: 'app-recognized-text',
@@ -12,7 +13,7 @@ import { ReceiptProcessorService } from '../../Services/receipt-processor.servic
 export class RecognizedTextComponent implements OnInit {
 
   @Input() ocrResult: IOcrRecognitionResult;
-  private receiptData: IReceipt;
+  private receiptData: Receipt;
 
   constructor(
     private receiptDataService: ReceiptDataService,
@@ -26,24 +27,31 @@ export class RecognizedTextComponent implements OnInit {
 
   addShoppingDate(text) {
     let resultDate = this.receiptProcessor.getShoppingDate(text);
-    this.receiptData.shoppingDate = resultDate;
+    this.receiptDataService.addShoppingDate(resultDate);
   }
 
   addTotalAmount(text) {
     let amount = this.receiptProcessor.getTotalAmount(text);
-    this.receiptData.totalAmount = amount;    
+    this.receiptDataService.addTotalAmount(amount); 
   }
 
   addNewItem(text:string) {
-    //get quantity
     let quantity = this.receiptProcessor.getQuantity(text);
 
-    //get price 
     let price = this.receiptProcessor.getProductPrice(text);
 
-    //get product name
-
+    let productName = this.receiptProcessor.getProductName(text);
     
-    //compose new IProduct object and push it
+    this.receiptDataService.addNewProductItem(productName, quantity, price);
+  }
+
+  updateProductItem(item: ReceiptItem, text: string) {
+    let quantity = this.receiptProcessor.getQuantity(text);
+
+    let price = this.receiptProcessor.getProductPrice(text);
+
+    let productName = this.receiptProcessor.getProductName(text);
+
+    this.receiptDataService.updateProductItem(item.rowKey, productName, price, quantity);
   }
 }

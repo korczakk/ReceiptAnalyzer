@@ -3,13 +3,13 @@
 }
 
 .quantity-control {
-    width: 60px;
-}
-
-.totalAmount-control {
     width: 90px;
 }
 
+.productprice-control {
+    width: 95px;
+}
+
 .category-control {
-    width: 100px;
+    width: 320px;
 }
