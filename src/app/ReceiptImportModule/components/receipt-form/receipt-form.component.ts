@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { ReceiptDataService } from "../../Services/receipt-data.service";
 import { Receipt } from '../../interfaces/receipt';
 import { IProductCategory } from '../../interfaces/iproduct-category';
@@ -12,6 +12,9 @@ import { Observable } from 'rxjs';
   styleUrls: ["./receipt-form.component.css"]
 })
 export class ReceiptFormComponent implements OnInit {
+
+  @Input() showWaiting: boolean = false;
+
   public receiptData: Receipt;
 
   public productCategories: IProductCategory[];
@@ -41,6 +44,10 @@ export class ReceiptFormComponent implements OnInit {
 
   categoryComparer(a: any, b: any): boolean {
     return a && b ? a.CategoryName == b.CategoryName : false;
+  }
+
+  storesComparer(a: IStore, b: IStore) : boolean {
+    return a && b ? a.StoreName == b.StoreName : false;
   }
 
 }

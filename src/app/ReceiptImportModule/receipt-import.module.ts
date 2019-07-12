@@ -31,7 +31,7 @@ import { DictionariesService } from './Services/dictionaries.service';
   ],
   providers: [
     ImageFileService,
-    { provide: AzureOcrServiceBase, useClass: AzureOcrServiceMock },
+    { provide: AzureOcrServiceBase, useClass: AzureOcrService },
     ReceiptProcessorService,
     ReceiptDataService,
     DictionariesService

@@ -13,8 +13,7 @@
                         <span class="dropdown-item-text" *ngIf="receiptData.items.length == 0">Brak elementów</span>
                         <div class="list-group">
                             <a class="list-group-item list-group-item-action" (click)="updateProductItem(item, line.text)" *ngFor="let item of receiptData.items" href="#">{{item.productName}}</a>                        
-                        </div>
-                        
+                        </div>                        
                       </div>
                 </span>
 

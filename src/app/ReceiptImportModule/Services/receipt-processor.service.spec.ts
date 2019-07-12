@@ -6,7 +6,7 @@ describe('ReceiptProcessorService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it("getShoppingDate gets date from YYYY-MM-DD hh-nn", () => {
-    let service: ReceiptProcessorService = new ReceiptProcessorService();
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
 
     let result = service.getShoppingDate("2019-01-01 16:42");
 
@@ -14,7 +14,7 @@ describe('ReceiptProcessorService', () => {
   });
 
   it("getShoppingDate gets date from DD-MM-YYYY", () => {
-    let service: ReceiptProcessorService = new ReceiptProcessorService();
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
 
     let result = service.getShoppingDate("01-02-2019");
 
@@ -22,7 +22,7 @@ describe('ReceiptProcessorService', () => {
   });
 
   it("getShoppingDate gets date from DD.MM.YYYY", () => {
-    let service: ReceiptProcessorService = new ReceiptProcessorService();
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
 
     let result = service.getShoppingDate("01.02.2019");
 console.log(result);
@@ -30,7 +30,7 @@ console.log(result);
   });
 
   it("getShoppingDate gets date from YYYY.MM.DD", () => {
-    let service: ReceiptProcessorService = new ReceiptProcessorService();
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
 
     let result = service.getShoppingDate("2019.02.01");
 console.log(result);
@@ -38,7 +38,7 @@ console.log(result);
   });
 
   it("getTotalAmount converts 'SUMA PLN 10.01' to correct value", () => {
-    let service: ReceiptProcessorService = new ReceiptProcessorService();
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
 
     let result = service.getTotalAmount("SUMA PLN 10.01");
 
@@ -46,7 +46,7 @@ console.log(result);
   });
 
   it("getTotalAmount converts '10, 01' to correct value", () => {
-    let service: ReceiptProcessorService = new ReceiptProcessorService();
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
 
     let result = service.getTotalAmount("10, 01");
 
@@ -54,7 +54,7 @@ console.log(result);
   });
 
   it("getTotalAmount converts ' 10 . 01 ' to correct value", () => {
-    let service: ReceiptProcessorService = new ReceiptProcessorService();
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
 
     let result = service.getTotalAmount(" 10 . 01 ");
 
@@ -62,15 +62,39 @@ console.log(result);
   });
 
   it("getQuantity retrives correct value from   1, 00x 12, 50 ", () => {
-    let service: ReceiptProcessorService = new ReceiptProcessorService();
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
 
     let result = service.getQuantity(" 1, 00x 12, 50 ");
 
     expect(result).toEqual("1.00");
   });
 
+  it("getQuantity retrives correct value from   1 x 12, 50 ", () => {
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
+
+    let result = service.getQuantity(" 1 x 12, 50 ");
+
+    expect(result).toEqual("1");
+  });
+
+  it("getQuantity retrives correct value from   1 x12, 50 ", () => {
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
+
+    let result = service.getQuantity(" 1 x12, 50 ");
+
+    expect(result).toEqual("1");
+  });
+
+  it("getQuantity retrives correct value from   1x12, 50 ", () => {
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
+
+    let result = service.getQuantity(" 1x12, 50 ");
+
+    expect(result).toEqual("1");
+  });
+
   it("getQuantity retrives correct value from  10,00 *12,50", () => {
-    let service: ReceiptProcessorService = new ReceiptProcessorService();
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
 
     let result = service.getQuantity("10,00 *12,50");
 
@@ -78,7 +102,7 @@ console.log(result);
   });
 
   it("getQuantity retrives correct value from 'Woda 1,5L 10,00 *12,50'", () => {
-    let service: ReceiptProcessorService = new ReceiptProcessorService();
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
 
     let result = service.getQuantity("Woda 1,5L 10,00 *12,50'");
 
@@ -86,7 +110,7 @@ console.log(result);
   });
 
   it("getProductPrice retrives correct value from 10,00 x 12,50", () => {
-    let service: ReceiptProcessorService = new ReceiptProcessorService();
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
 
     let result = service.getProductPrice("10,00 x 12,50");
 
@@ -94,7 +118,7 @@ console.log(result);
   });
 
   it("getProductPrice retrives correct value from 10,00* 12,50", () => {
-    let service: ReceiptProcessorService = new ReceiptProcessorService();
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
 
     let result = service.getProductPrice("10,00* 12,50");
 
@@ -102,7 +126,7 @@ console.log(result);
   });
 
   it("getProductName return correct value when text is 'Name  1,00 x 12.50 D'", () => {
-    let service: ReceiptProcessorService = new ReceiptProcessorService();
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
 
     let result = service.getProductName("Name  1,00 x 12.50 D");
 
@@ -111,7 +135,7 @@ console.log(result);
   });
 
   it("getProductName return correct value when text is '1,00 x 12.50 D'", () => {
-    let service: ReceiptProcessorService = new ReceiptProcessorService();
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
 
     let result = service.getProductName("1,00 x 12.50 D");
 
@@ -120,7 +144,7 @@ console.log(result);
   });
 
   it("getProductName return correct value when text is 'Name of a product '", () => {
-    let service: ReceiptProcessorService = new ReceiptProcessorService();
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
 
     let result = service.getProductName("Name of a product ");
 

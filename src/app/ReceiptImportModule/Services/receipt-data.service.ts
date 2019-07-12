@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Observable, BehaviorSubject } from "rxjs";
-import { ReceiptProcessorService } from "./receipt-processor.service";
 import { Receipt } from '../interfaces/receipt';
 import { ReceiptItem } from '../interfaces/receipt-item';
+import { IStore } from '../interfaces/istore';
 
 @Injectable()
 export class ReceiptDataService {
+
   constructor() { }
 
   private _receiptData: Receipt = new Receipt();
@@ -31,6 +32,10 @@ export class ReceiptDataService {
     this._receiptData.items.push(item);
   }
 
+  addProductItems(items: ReceiptItem[]) {
+    this._receiptData.items = items;    
+  }
+
   updateProductItem(rowKey: number, productName: string, price: string, quantity: string) {
     let newItem: ReceiptItem = this._receiptData.items.find(item => item.rowKey == rowKey);  
     let index = this._receiptData.items.findIndex(item => item.rowKey == rowKey);  
@@ -45,5 +50,16 @@ export class ReceiptDataService {
       newItem.productsQuantity = Number.parseFloat(quantity);
 
     this._receiptData.items[index] = newItem;
+  }
+
+  addStore(store: IStore) {
+    this._receiptData.store = store;
+  }
+
+  clear() {
+    this._receiptData.items = [];
+    this._receiptData.shoppingDate = '';
+    this._receiptData.store = undefined;
+    this._receiptData.totalAmount = undefined;
   }
 }
