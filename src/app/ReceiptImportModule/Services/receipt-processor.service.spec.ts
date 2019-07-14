@@ -109,6 +109,30 @@ console.log(result);
     expect(result).toEqual("10.00");
   });
 
+  it("getQuantity retrives correct value from 'Woda 1,5L 1 szt. x 12,50'", () => {
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
+
+    let result = service.getQuantity('Woda 1,5L 1 szt. x 12,50');
+
+    expect(result).toEqual("1");
+  });
+
+  it("getQuantity retrives correct value from 'Woda 1,5L 1op x 12,50'", () => {
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
+
+    let result = service.getQuantity('Woda 1,5L 1op x 12,50');
+
+    expect(result).toEqual("1");
+  });
+
+  it("getQuantity retrives correct value from 'Woda 1,5L 1 op.x 12,50'", () => {
+    let service: ReceiptProcessorService = new ReceiptProcessorService(null);
+
+    let result = service.getQuantity('Woda 1,5L 1 op.x 12,50');
+
+    expect(result).toEqual("1");
+  });
+
   it("getProductPrice retrives correct value from 10,00 x 12,50", () => {
     let service: ReceiptProcessorService = new ReceiptProcessorService(null);
 

@@ -70,10 +70,15 @@ export class ReceiptProcessorService {
     if (this.checkIfStringContainsQuantityAndPrice(text) == -1)
       return;
 
-    let quantityExp: RegExp = /\d{1,3}\s?([,|.]\s?\d{1,3}\s?)?[x|*]/;
+    let quantityExp: RegExp = /\d{1,3}\s?([,|.]\s?\d{1,3})?(szt|szt.|op|op.)?\s?[x|*]/;
     let result = quantityExp.exec(text);
 
-    return result[0].replace(/\s/g, '').replace(/,/g, '.').replace(/[x|*]/g, '').trim();
+    return result[0]
+    .replace(/\s/g, '')
+    .replace(/(szt.|szt|op.|op)/g, '')
+    .replace(/,/g, '.')
+    .replace(/[x|*]/g, '')
+    .trim();
   }
 
   /**
@@ -181,9 +186,20 @@ export class ReceiptProcessorService {
     if (!text)
       return -1;
 
-    let quantityAndPriceExpression: RegExp = /\d{1,3}\s?([,|.]\s?\d{1,3}\s?)?[x|*]\s?\d+\s?[,|\.]\s?\d{2}/;
+    let quantityAndPriceExpression: RegExp[] = [
+       /\d{1,3}\s?[,|.]\s?\d{1,3}\s?[x|*]\s?\d+\s?[,|\.]\s?\d{2}/,
+       /\d{1,3}\s?[x|*]\s?\d+\s?[,|\.]\s?\d{2}/,
+       /\d{1,3}\s?(szt|szt.|op|op.)\s?[x|*]\s?\d+\s?[,|\.]\s?\d{2}/
+      ]
+    
+    for(let i: number = 0; i < quantityAndPriceExpression.length; i++) {
+      let result = text.search(quantityAndPriceExpression[i]);
 
-    return text.search(quantityAndPriceExpression);
+      if(result > -1)
+        return result;
+    }
+    
+    return -1;
   }
 
   private howManyNumbersInString(text: string): number {
