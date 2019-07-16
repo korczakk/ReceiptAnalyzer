@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        ".vscode{,/**}"
+    ],
+    "appService.showBuildDuringDeployPrompt": false,
+    "appService.defaultWebAppToDeploy": "/subscriptions/fc81b9cc-799c-4c75-b3d1-b7ddad37fc14/resourceGroups/ReceiptAnalyzerResource/providers/Microsoft.Web/sites/ReceiptAnalyzerWeb",
+    "appService.deploySubpath": "ReceiptAnalyzer.Web\\dist\\ReceiptAnalyzer"
+}
