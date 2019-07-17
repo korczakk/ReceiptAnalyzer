@@ -1,15 +1,14 @@
 using System;
 using System.IO;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
+
 using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
 
 using Newtonsoft.Json;
@@ -41,14 +40,12 @@ namespace ImageUploadFunction
 
         static private async Task<string> UploadFileToStorage(ImageFile file)
         {
-          string cn = GetConnectionString();
+          string cn = StorageHelper.GetConnectionString(_context);
            
           if (cn == null)
             throw new Exception("Connection string is empty.");
 
-          CloudStorageAccount storageAccount = CloudStorageAccount.Parse(cn);
-          CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-          CloudBlobContainer container = blobClient.GetContainerReference("receiptimages");
+          CloudBlobContainer container = StorageHelper.GetBlobContainer(cn);
 
           await container.CreateIfNotExistsAsync(
             BlobContainerPublicAccessType.Blob,
@@ -68,15 +65,6 @@ namespace ImageUploadFunction
           return blob.Uri.AbsoluteUri;
         }
 
-        static private string GetConnectionString()
-        {
-          var config = new ConfigurationBuilder()
-            .SetBasePath(_context.FunctionAppDirectory)
-            .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-            .AddEnvironmentVariables()
-            .Build();
 
-          return config.GetConnectionString("default");
-        }
     }
 }
