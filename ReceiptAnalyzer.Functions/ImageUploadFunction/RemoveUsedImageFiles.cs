@@ -13,7 +13,7 @@ namespace ImageUploadFunction
   public static class RemoveUsedImageFiles
   {
     [FunctionName("RemoveUsedImageFiles")]
-    public static async Task Run([TimerTrigger("0 0 21 * * *")]TimerInfo myTimer,
+    public static async Task Run([TimerTrigger("0 0 8 * * *")]TimerInfo myTimer,
       ILogger log,
       Microsoft.Azure.WebJobs.ExecutionContext context)
     {
@@ -25,17 +25,7 @@ namespace ImageUploadFunction
         throw new Exception("Connection string is invalide.");
 
       CloudBlobContainer container = StorageHelper.GetBlobContainer(cn);
-      var blobsSegmented = await container.ListBlobsSegmentedAsync(null);
-
-      IEnumerable<IListBlobItem> blobs = blobsSegmented
-          .Results
-          .Where(x => x.Container.Properties.LastModified < DateTimeOffset.Now);
-
-      Parallel.ForEach<IListBlobItem>(blobs,
-        X =>
-        {
-          X.Container.DeleteIfExistsAsync();
-        });
+      await container.DeleteIfExistsAsync();
     }
   }
 }
