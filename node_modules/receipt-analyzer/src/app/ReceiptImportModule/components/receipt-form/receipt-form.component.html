@@ -32,13 +32,13 @@
     <ul class="list-group">
       <li *ngFor="let itm of receiptData.items" class="list-group-item list-group-item-light d-flex px-0 border-0">
         <input type="text" name="productName" [ngModelOptions]="{standalone:true}" [(ngModel)]="itm.productName"
-          class="form-control mr-1" />
+          class="form-control mr-1 product-name" />
         <input type="number" name="productsQuantity" [ngModelOptions]="{standalone:true}"
-          [(ngModel)]="itm.productsQuantity" class="form-control quantity-control mr-1" />
+          [(ngModel)]="itm.productsQuantity" class="form-control quantity-control mr-1 " />
         <input type="number" name="productPrice" [ngModelOptions]="{standalone:true}" [(ngModel)]="itm.productPrice"
           class="form-control productprice-control mr-1" />
         <select name="productCategory" [ngModelOptions]="{standalone:true}" [compareWith]="categoryComparer"
-          [(ngModel)]="itm.productCategory" class="form-control category-control">
+          [(ngModel)]="itm.productCategory" class="form-control category-control w-25">
           <option></option>
           <option *ngFor="let category of productCategories" [ngValue]="category">{{category.CategoryName}}</option>
         </select>

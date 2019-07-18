@@ -1,10 +1,6 @@
 .box {
-    width: 650px;
-    height: 600px;    
-    margin-bottom: 10px;
-    margin-left: 20px;
+    height: 600px;
     border: 1px solid hsl(0, 0%, 78%);;
-    display: inline-block;
     overflow-y: scroll;    
 }
 
@@ -13,7 +9,7 @@
 }
 
 .buttons-visible:hover span {
-display: inline-block;
+    display: inline-block;
 }
 
 .buttons-hidden {    

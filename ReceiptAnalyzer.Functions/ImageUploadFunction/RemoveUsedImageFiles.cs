@@ -13,7 +13,7 @@ namespace ImageUploadFunction
   public static class RemoveUsedImageFiles
   {
     [FunctionName("RemoveUsedImageFiles")]
-    public static async Task Run([TimerTrigger("0 0 8 * * *")]TimerInfo myTimer,
+    public static async Task Run([TimerTrigger("0 0 22 * * *")]TimerInfo myTimer,
       ILogger log,
       Microsoft.Azure.WebJobs.ExecutionContext context)
     {

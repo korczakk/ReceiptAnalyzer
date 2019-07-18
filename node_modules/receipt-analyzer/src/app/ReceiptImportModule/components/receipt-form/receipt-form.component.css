@@ -1,15 +1,93 @@
-.receipt-form {
-    width: 1020px;
-}
+@media (min-width: 320px) {
 
-.quantity-control {
+    .product-name {
+      width: auto;
+    }
+  
+    .quantity-control {
+      width: 50px;
+    }
+  
+    .productprice-control {
+      width: 50px;
+    }
+  
+    .category-control {
+      width: 100px;
+    }
+  }
+
+@media (min-width: 576px) {
+
+  .product-name {
+    width: 75%;
+  }
+
+  .quantity-control {
     width: 90px;
+  }
+
+  .productprice-control {
+    width: 90px;
+  }
+
+  .category-control {
+    width: auto;
+  }
 }
 
-.productprice-control {
+
+@media (min-width: 768px) {
+  .product-name {
+    width: 75%;
+  }
+
+  .quantity-control {
+    width: 100px;
+  }
+
+  .productprice-control {
+    width: 105px;
+  }
+
+  .category-control {
+    width: auto;
+  }
+}
+
+@media (min-width: 992px) {
+  .product-name {
+    width: 75%;
+  }
+
+  .quantity-control {
+    width: 90px;
+  }
+
+  .productprice-control {
     width: 95px;
+  }
+
+  .category-control {
+    width: auto;
+  }
 }
 
-.category-control {
-    width: 320px;
+
+@media (min-width: 1200px) {
+  .product-name {
+    width: 75%;
+  }
+
+  .quantity-control {
+    width: 90px;
+  }
+
+  .productprice-control {
+    width: 95px;
+  }
+
+  .category-control {
+    width: auto;
+  }
 }

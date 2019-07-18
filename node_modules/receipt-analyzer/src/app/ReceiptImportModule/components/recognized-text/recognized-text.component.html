@@ -1,5 +1,5 @@
 <div class="box">
-    <ul class="list-group" style="width:622px;">
+    <ul class="list-group" style="width:610px;">
         <li class="list-group-item list-group-item-action list-group-item-light 
                     m-1 d-flex justify-content-between buttons-visible" 
                     *ngFor="let line of ocrResult.lines">
@@ -15,10 +15,7 @@
                             <a class="list-group-item list-group-item-action" (click)="updateProductItem(item, line.text)" *ngFor="let item of receiptData.items" href="#">{{item.productName}}</a>                        
                         </div>                        
                       </div>
-                </span>
-
-                    
-               
+                </span>               
             </div>
         </li>
     </ul>

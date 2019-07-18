@@ -1,22 +1,29 @@
-<div class="d-flex justify-content-center">
-  <div class="d-flex flex-row">
-    <app-image-preview [imageFile]="file"></app-image-preview>
-    <app-recognized-text [ocrResult]="ocrResult"></app-recognized-text>
+<div class="container">
+  <div class="row my-sm-1">
+    <div class="col-lg-5 col-sm-12 mb-2">
+      <app-image-preview [imageFile]="file"></app-image-preview>
+    </div>
+    <div class="col-lg-7 col-sm-12">
+      <app-recognized-text [ocrResult]="ocrResult"></app-recognized-text>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-lg-5 col-sm-10 my-5">
+      <label for="fileBrowser" class="btn btn-info mr-1">Wybierz plik</label>
+      <input type="file" accept="image/jpeg, image/bmp, image/gif, image/png"
+        (change)="onFileSelected($event.target.files[0]);" id="fileBrowser" class="d-none">
+      <label class="btn btn-success" [class.disabled]="!file" (click)="onSubmit()">Procesuj</label>
+      <div>
+        {{file?.name}}
+      </div>
+    </div>
+  </div>
+
+<div class="row">
+  <div class="col-12">
+      <app-receipt-form [showWaiting]="showWaiting"></app-receipt-form>
   </div>
 </div>
 
-<div class="d-flex justify-content-center">
-  <div>
-    <label for="fileBrowser" class="btn btn-info mr-1">Wybierz plik</label>
-    <input type="file" accept="image/jpeg, image/bmp, image/gif, image/png"
-      (change)="onFileSelected($event.target.files[0]);" id="fileBrowser" class="d-none">
-    <label class="btn btn-success" [class.disabled]="!file" (click)="onSubmit()">Procesuj</label>
-    <div>
-      {{file?.name}}
-    </div>
-  </div>
-</div>
-<div class="d-flex justify-content-center">
-  <app-receipt-form [showWaiting]="showWaiting"></app-receipt-form>
 </div>
 
