@@ -23,8 +23,7 @@ export class ReceiptDataService {
   }
 
   addNewProductItem(productName: string, quantity: string, price: string) {
-    let item = new ReceiptItem();
-    item.rowKey = this._receiptData.items.length + 1;
+    let item = new ReceiptItem();    
     item.productName = productName;
     item.productPrice = Number.parseFloat(price);
     item.productsQuantity = Number.parseFloat(quantity);
@@ -36,7 +35,7 @@ export class ReceiptDataService {
     this._receiptData.items = items;    
   }
 
-  updateProductItem(rowKey: number, productName: string, price: string, quantity: string) {
+  updateProductItem(rowKey: string, productName: string, price: string, quantity: string) {
     let newItem: ReceiptItem = this._receiptData.items.find(item => item.rowKey == rowKey);  
     let index = this._receiptData.items.findIndex(item => item.rowKey == rowKey);  
 

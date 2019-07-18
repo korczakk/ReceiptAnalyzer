@@ -5,6 +5,7 @@ import { IProductCategory } from '../../interfaces/iproduct-category';
 import { DictionariesService } from '../../Services/dictionaries.service';
 import { IStore } from '../../interfaces/istore';
 import { Observable } from 'rxjs';
+import { ReceiptItem } from '../../interfaces/receipt-item';
 
 @Component({
   selector: "app-receipt-form",
@@ -48,6 +49,11 @@ export class ReceiptFormComponent implements OnInit {
 
   storesComparer(a: IStore, b: IStore) : boolean {
     return a && b ? a.StoreName == b.StoreName : false;
+  }
+
+  removeReceiptItem(item: ReceiptItem) {
+    console.log(item.rowKey);
+    this.receiptData.items = this.receiptData.items.filter(val => val.rowKey != item.rowKey);
   }
 
 }
