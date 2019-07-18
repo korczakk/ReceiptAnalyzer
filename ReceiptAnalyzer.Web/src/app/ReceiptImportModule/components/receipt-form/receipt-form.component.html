@@ -30,7 +30,7 @@
     <i class="fa fa-spinner fa-fw fa-pulse fa-2x " style="margin-left: 460px;"
       *ngIf="showWaiting && receiptData.items.length == 0"></i>
     <ul class="list-group">
-      <li *ngFor="let itm of receiptData.items" class="list-group-item list-group-item-light d-flex px-0">
+      <li *ngFor="let itm of receiptData.items" class="list-group-item list-group-item-light d-flex px-0 border-0">
         <input type="text" name="productName" [ngModelOptions]="{standalone:true}" [(ngModel)]="itm.productName"
           class="form-control mr-1" />
         <input type="number" name="productsQuantity" [ngModelOptions]="{standalone:true}"
@@ -42,6 +42,7 @@
           <option></option>
           <option *ngFor="let category of productCategories" [ngValue]="category">{{category.CategoryName}}</option>
         </select>
+        <i class="fa fa-times text-danger ml-2 fa-2x" (click)="removeReceiptItem(itm)"></i>
       </li>
     </ul>
   </div>
