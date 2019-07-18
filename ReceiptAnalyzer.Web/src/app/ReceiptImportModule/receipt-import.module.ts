@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { ReceiptImportMainComponent } from './components/receipt-import-main/receipt-import-main.component';
 import { HistoryComponent } from './components/history/history.component';
 import { DictionariesComponent } from './components/dictionaries/dictionaries.component';
@@ -27,6 +27,7 @@ import { DictionariesService } from './Services/dictionaries.service';
   imports: [
     CommonModule,
     HttpClientModule,
+    ReactiveFormsModule,
     FormsModule
   ],
   providers: [
