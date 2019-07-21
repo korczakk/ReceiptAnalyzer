@@ -5,7 +5,7 @@ import { IProductCategory } from '../../interfaces/iproduct-category';
 import { DictionariesService } from '../../Services/dictionaries.service';
 import { IStore } from '../../interfaces/istore';
 import { ReceiptItem } from '../../interfaces/receipt-item';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -21,17 +21,7 @@ export class ReceiptFormComponent implements OnInit {
   public productCategories: IProductCategory[];
   public stores: IStore[];
 
-  public receiptForm = this.fb.group({
-    store: [],
-    shoppingDate: [],
-    totalAmount: [],
-    items: this.fb.group({
-      productName: [],
-      productsQuantity: [],
-      productPrice: [],
-      productCategory: []
-    })
-  });
+  public receiptForm: FormGroup;
   
 
   constructor(
@@ -40,15 +30,28 @@ export class ReceiptFormComponent implements OnInit {
     private fb: FormBuilder) {}
 
   ngOnInit() {
+
+    this.receiptForm = this.fb.group({
+      store: [],
+      shoppingDate: [],
+      totalAmount: [],
+      items: this.fb.group({
+        productName: [],
+        productsQuantity: [],
+        productPrice: [],
+        productCategory: []
+      })
+    });
+
     this.dictionariesService.getProductCategories().subscribe(
       data => {
         this.productCategories = data;
       }
-    )
+    );
 
     this.receiptDataService.receiptData.subscribe(data => {
       this.receiptData = data;
-  
+      this.populateReceiptForm(data);
     });
 
     this.dictionariesService.getStores().subscribe(
@@ -56,6 +59,9 @@ export class ReceiptFormComponent implements OnInit {
         this.stores = data;
       }
     );
+  }
+  populateReceiptForm(data: Receipt) {
+    this.receiptForm.patchValue(data);
   }
 
   // categoryComparer(a: any, b: any): boolean {
