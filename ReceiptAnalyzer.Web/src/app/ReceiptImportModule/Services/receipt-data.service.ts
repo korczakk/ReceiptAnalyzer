@@ -74,4 +74,12 @@ export class ReceiptDataService {
     this._receiptData.store = undefined;
     this._receiptData.totalAmount = undefined;
   }
+
+  removeReceiptItem(item: ReceiptItem) {
+    this._receiptData.items = this._receiptData.items.filter(
+      val => val.rowKey != item.rowKey
+    );
+
+    this.subject.next(this._receiptData);
+  }
 }

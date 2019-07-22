@@ -4,8 +4,7 @@ import { Receipt } from '../../interfaces/receipt';
 import { IProductCategory } from '../../interfaces/iproduct-category';
 import { DictionariesService } from '../../Services/dictionaries.service';
 import { IStore } from '../../interfaces/istore';
-import { ReceiptItem } from '../../interfaces/receipt-item';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 
 
 @Component({
@@ -14,52 +13,62 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ["./receipt-form.component.css"]
 })
 export class ReceiptFormComponent implements OnInit {
-
   @Input() showWaiting: boolean = false;
 
-  public receiptData: Receipt;
+  public receiptData: Receipt;    //DO USUNIĘCIA
   public productCategories: IProductCategory[];
   public stores: IStore[];
 
   public receiptForm: FormGroup;
-  
+  public itemsForm: FormArray;
 
   constructor(
     private receiptDataService: ReceiptDataService,
     private dictionariesService: DictionariesService,
-    private fb: FormBuilder) {}
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit() {
-
     this.receiptForm = this.fb.group({
       store: [],
       shoppingDate: [],
       totalAmount: [],
-      items: this.fb.group({
-        productName: [],
-        productsQuantity: [],
-        productPrice: [],
-        productCategory: []
-      })
+      items: this.fb.array([])
     });
 
-    this.dictionariesService.getProductCategories().subscribe(
-      data => {
-        this.productCategories = data;
-      }
-    );
+    this.itemsForm = this.receiptForm.get("items") as FormArray;
+
+    this.dictionariesService.getProductCategories().subscribe(data => {
+      this.productCategories = data;
+    });
 
     this.receiptDataService.receiptData.subscribe(data => {
       this.receiptData = data;
+      this.createReceiptItem(data.items.length);
       this.populateReceiptForm(data);
     });
 
-    this.dictionariesService.getStores().subscribe(
-      data => {
-        this.stores = data;
-      }
-    );
+    this.dictionariesService.getStores().subscribe(data => {
+      this.stores = data;
+    });
   }
+
+  createReceiptItem(numberOfItems: number) {
+    this.itemsForm.controls.splice(0);
+
+    for (let i = 0; i < numberOfItems; i++) {
+      this.itemsForm.controls.push(
+        this.fb.group({
+          productName: [],
+          productsQuantity: [],
+          productPrice: [],
+          productCategory: [],
+          rowKey: []
+        })
+      );
+    }
+  }
+
   populateReceiptForm(data: Receipt) {
     this.receiptForm.patchValue(data);
   }
@@ -68,15 +77,9 @@ export class ReceiptFormComponent implements OnInit {
   //   return a && b ? a.CategoryName == b.CategoryName : false;
   // }
 
-  // storesComparer(a: IStore, b: IStore) : boolean {
-  //   return a && b ? a.StoreName == b.StoreName : false;
-  // }
-
-  removeReceiptItem(item: ReceiptItem) {
-    this.receiptData.items = this.receiptData.items.filter(val => val.rowKey != item.rowKey);
+  removeReceiptItem(item: FormGroup) {
+    this.receiptDataService.removeReceiptItem(item.value);
   }
 
-  saveReceiptFormData() {
-    
-  }
+  saveReceiptFormData() {}
 }
