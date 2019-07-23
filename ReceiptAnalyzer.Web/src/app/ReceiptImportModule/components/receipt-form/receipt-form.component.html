@@ -6,27 +6,30 @@
         <option></option>
         <option *ngFor="let store of stores" [ngValue]="store">{{store?.StoreName}}</option>
       </select>
-      <i class="fa fa-spinner fa-fw fa-pulse fa-2x  ml-3" *ngIf="showWaiting && !receiptData.store?.StoreName"></i>
+      <i class="fa fa-spinner fa-fw fa-pulse fa-2x  ml-3" *ngIf="formUpdatingProgress?.updatingStore"></i>
     </div>
   </div>
   <div class="form-group">
     <label for="receiptDate">Data paragonu</label>
     <div class="row">
       <input type="date" id="receiptDate" formControlName="shoppingDate" class="form-control w-50" />
-      <i class="fa fa-spinner fa-fw fa-pulse fa-2x  ml-3" *ngIf="showWaiting && !receiptData.shoppingDate"></i>
+      <i class="fa fa-spinner fa-fw fa-pulse fa-2x  ml-3" *ngIf="formUpdatingProgress?.updatingShoppingDate"></i>
     </div>
   </div>
   <div class="form-group">
     <label for="totalAmount">Wartość paragonu</label>
     <div class="row">
       <input type="number" id="totalAmount" formControlName="totalAmount" class="form-control w-50" />
-      <i class="fa fa-spinner fa-fw fa-pulse fa-2x  ml-3" *ngIf="showWaiting && !receiptData.totalAmount"></i>
+      <i class="fa fa-spinner fa-fw fa-pulse fa-2x  ml-3" *ngIf="formUpdatingProgress?.updatingTotalAmount"></i>
     </div>
   </div>
   <div class="form-group">
     <label for="items">Produkty</label>
     <i class="fa fa-spinner fa-fw fa-pulse fa-2x" style="margin-left: 46%"
-      *ngIf="showWaiting && receiptData.items.length == 0"></i>
+      *ngIf="formUpdatingProgress?.updatingReceiptItems"></i>
+    <div *ngIf="itemsForm.controls.length == 0">
+      Brak produktów
+    </div>
     <ul class="list-group">
       <div formArrayName="items" *ngFor="let item of itemsForm.controls; let i = index">
         <li [formGroupName]="i" class="list-group-item list-group-item-light d-flex px-0 border-0">

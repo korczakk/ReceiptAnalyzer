@@ -2,9 +2,9 @@ import { IProductCategory } from './iproduct-category';
 
 export class ReceiptItem {
     rowKey: string;
-    productName: string ;
-    productsQuantity: number ;
-    productPrice: number ;
+    productName: string = '';
+    productsQuantity: number  = 0;
+    productPrice: number = 0;
     productCategory: IProductCategory ;
 
     constructor() {

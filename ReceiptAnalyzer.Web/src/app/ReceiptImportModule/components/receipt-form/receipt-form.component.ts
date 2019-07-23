@@ -1,10 +1,13 @@
 import { Component, OnInit, Input } from "@angular/core";
+import { distinctUntilChanged } from 'rxjs/operators';
 import { ReceiptDataService } from "../../Services/receipt-data.service";
 import { Receipt } from '../../interfaces/receipt';
 import { IProductCategory } from '../../interfaces/iproduct-category';
 import { DictionariesService } from '../../Services/dictionaries.service';
 import { IStore } from '../../interfaces/istore';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { ReceiptFormUpdatingProgress } from '../../interfaces/ReceiptFormUpdatingProgress';
+import { ReceiptItem } from '../../interfaces/receipt-item';
 
 
 @Component({
@@ -13,9 +16,8 @@ import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
   styleUrls: ["./receipt-form.component.css"]
 })
 export class ReceiptFormComponent implements OnInit {
-  @Input() showWaiting: boolean = false;
+  @Input() formUpdatingProgress: ReceiptFormUpdatingProgress;
 
-  public receiptData: Receipt;    //DO USUNIĘCIA
   public productCategories: IProductCategory[];
   public stores: IStore[];
 
@@ -26,27 +28,38 @@ export class ReceiptFormComponent implements OnInit {
     private receiptDataService: ReceiptDataService,
     private dictionariesService: DictionariesService,
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.receiptForm = this.fb.group({
-      store: [],
-      shoppingDate: [],
+      store: [''],
+      shoppingDate: [null, Validators.required],
       totalAmount: [],
       items: this.fb.array([])
     });
 
     this.itemsForm = this.receiptForm.get("items") as FormArray;
 
+
+
     this.dictionariesService.getProductCategories().subscribe(data => {
       this.productCategories = data;
     });
 
     this.receiptDataService.receiptData.subscribe(data => {
-      this.receiptData = data;
       this.createReceiptItem(data.items.length);
       this.populateReceiptForm(data);
     });
+
+    this.itemsForm.valueChanges
+      .pipe(
+        distinctUntilChanged((prev: ReceiptItem[], curr: ReceiptItem[]) => {
+          
+          return JSON.stringify(prev) === JSON.stringify(curr);
+        }))
+      .subscribe(val => {
+        this.receiptDataService.addProductItems(val);
+      });
 
     this.dictionariesService.getStores().subscribe(data => {
       this.stores = data;
@@ -54,19 +67,23 @@ export class ReceiptFormComponent implements OnInit {
   }
 
   createReceiptItem(numberOfItems: number) {
-    this.itemsForm.controls.splice(0);
+    //this.itemsForm.controls.splice(0);
+
+    let arr;
 
     for (let i = 0; i < numberOfItems; i++) {
-      this.itemsForm.controls.push(
-        this.fb.group({
-          productName: [],
-          productsQuantity: [],
-          productPrice: [],
-          productCategory: [],
-          rowKey: []
-        })
-      );
+      let item: FormGroup = this.fb.group({
+        productName: [],
+        productsQuantity: [],
+        productPrice: [],
+        productCategory: [],
+        rowKey: []
+      })
+
+      arr.push(item);
     }
+
+    this.itemsForm = this.fb.array(arr);
   }
 
   populateReceiptForm(data: Receipt) {
@@ -81,5 +98,5 @@ export class ReceiptFormComponent implements OnInit {
     this.receiptDataService.removeReceiptItem(item.value);
   }
 
-  saveReceiptFormData() {}
+  saveReceiptFormData() { console.log(this.receiptForm.value); }
 }

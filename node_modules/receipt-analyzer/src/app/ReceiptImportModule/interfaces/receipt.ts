@@ -2,12 +2,12 @@ import { IStore } from './istore';
 import { ReceiptItem } from './receipt-item';
 
 export class Receipt {
-    store: IStore;
-    shoppingDate: string;
-    totalAmount: number;
+    store: IStore = {} as IStore;
+    shoppingDate: string = '';
+    totalAmount: number = 0;
     items: ReceiptItem[];
 
     constructor() {
-        this.items = [];
+        this.items = new Array<ReceiptItem>();
     }
 }

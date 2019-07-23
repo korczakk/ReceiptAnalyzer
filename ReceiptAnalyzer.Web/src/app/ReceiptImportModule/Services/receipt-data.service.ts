@@ -40,6 +40,15 @@ export class ReceiptDataService {
     this.subject.next(this._receiptData);
   }
 
+  /**
+   * Updates Receipt.items collection based on data provided in parameters. New ReceiptItem object is created using 
+   * provided values and it is replaced with old ReceiptItem.
+   * 
+   * @param rowKey 
+   * @param productName 
+   * @param price 
+   * @param quantity 
+   */
   updateProductItem(
     rowKey: string,
     productName: string,
@@ -73,6 +82,8 @@ export class ReceiptDataService {
     this._receiptData.shoppingDate = "";
     this._receiptData.store = undefined;
     this._receiptData.totalAmount = undefined;
+
+    this.subject.next(this._receiptData);
   }
 
   removeReceiptItem(item: ReceiptItem) {
@@ -82,4 +93,6 @@ export class ReceiptDataService {
 
     this.subject.next(this._receiptData);
   }
+
+
 }

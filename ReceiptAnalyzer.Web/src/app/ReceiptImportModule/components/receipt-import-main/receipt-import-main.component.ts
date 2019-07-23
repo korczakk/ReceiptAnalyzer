@@ -4,6 +4,7 @@ import { IOcrRecognitionResult } from '../../interfaces/iocr-recognition-result'
 import { AzureOcrServiceBase } from '../../interfaces/AzureOcrServiceBase';
 import { ReceiptProcessorService } from '../../Services/receipt-processor.service';
 import { ReceiptDataService } from '../../Services/receipt-data.service';
+import { ReceiptFormUpdatingProgress } from '../../interfaces/ReceiptFormUpdatingProgress';
 
 @Component({
   templateUrl: "./receipt-import-main.component.html",
@@ -13,7 +14,7 @@ export class ReceiptImportMainComponent implements OnInit {
 
   public file: File;
   public ocrResult: IOcrRecognitionResult = {} as IOcrRecognitionResult;
-  showWaiting: boolean;
+  formUpdatingProgress: ReceiptFormUpdatingProgress;
 
   constructor(
     private fileService: ImageFileService,
@@ -22,7 +23,9 @@ export class ReceiptImportMainComponent implements OnInit {
     private receiptDataService: ReceiptDataService
   ) {}
 
-  ngOnInit() {  }
+  ngOnInit() { 
+    this.formUpdatingProgress = new ReceiptFormUpdatingProgress();
+   }
 
   public onFileSelected(file) {
     if (!file) return;
@@ -36,10 +39,11 @@ export class ReceiptImportMainComponent implements OnInit {
     this.file = file;
 
     this.receiptDataService.clear(); 
+    this.ocrResult = {} as IOcrRecognitionResult;
   }
 
-  public onSubmit() {
-    this.showWaiting = true;
+  public onSubmit() {  
+    this.formUpdatingProgress.setAllToTrue();
     
     this.ocrService.processImageWithOcr(this.file).subscribe(
       res => {
@@ -49,27 +53,29 @@ export class ReceiptImportMainComponent implements OnInit {
         //handle automatic form filling after OCR         
         this.receiptProcessor.retriveShoppingDate(res).subscribe(shoppingDate => {
           this.receiptDataService.addShoppingDate(shoppingDate);
+          this.formUpdatingProgress.updatingShoppingDate = false;
         });
 
         this.receiptProcessor.retriveStoreName(res).subscribe(store => {
           this.receiptDataService.addStore(store);
+          this.formUpdatingProgress.updatingStore = false;
         });
 
         this.receiptProcessor.retriveTotalAmount(res).subscribe(price => {
           this.receiptDataService.addTotalAmount(price);
+          this.formUpdatingProgress.updatingTotalAmount = false;
         });
 
         this.receiptProcessor.retriveProductsDetails(res).subscribe(products => {
           this.receiptDataService.addProductItems(products);
-
-          this.showWaiting = false;
+          this.formUpdatingProgress.updatingReceiptItems = false;
         });
 
       },
       err => {
         console.log(err);
 
-        this.showWaiting = false;
+        this.formUpdatingProgress = new ReceiptFormUpdatingProgress();
       }
     );
 
