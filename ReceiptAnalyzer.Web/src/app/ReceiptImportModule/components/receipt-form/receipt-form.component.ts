@@ -40,8 +40,6 @@ export class ReceiptFormComponent implements OnInit {
 
     this.itemsForm = this.receiptForm.get("items") as FormArray;
 
-
-
     this.dictionariesService.getProductCategories().subscribe(data => {
       this.productCategories = data;
     });
@@ -51,15 +49,15 @@ export class ReceiptFormComponent implements OnInit {
       this.populateReceiptForm(data);
     });
 
-    this.itemsForm.valueChanges
-      .pipe(
-        distinctUntilChanged((prev: ReceiptItem[], curr: ReceiptItem[]) => {
+    // this.itemsForm.valueChanges
+    //   .pipe(
+    //     distinctUntilChanged((prev: ReceiptItem[], curr: ReceiptItem[]) => {
           
-          return JSON.stringify(prev) === JSON.stringify(curr);
-        }))
-      .subscribe(val => {
-        this.receiptDataService.addProductItems(val);
-      });
+    //       return JSON.stringify(prev) === JSON.stringify(curr);
+    //     }))
+    //   .subscribe(val => {
+    //     this.receiptDataService.addProductItems(val);
+    //   });
 
     this.dictionariesService.getStores().subscribe(data => {
       this.stores = data;
@@ -67,9 +65,7 @@ export class ReceiptFormComponent implements OnInit {
   }
 
   createReceiptItem(numberOfItems: number) {
-    //this.itemsForm.controls.splice(0);
-
-    let arr;
+    this.itemsForm.controls.splice(0);    
 
     for (let i = 0; i < numberOfItems; i++) {
       let item: FormGroup = this.fb.group({
@@ -80,19 +76,13 @@ export class ReceiptFormComponent implements OnInit {
         rowKey: []
       })
 
-      arr.push(item);
+      this.itemsForm.push(item);
     }
-
-    this.itemsForm = this.fb.array(arr);
   }
 
   populateReceiptForm(data: Receipt) {
     this.receiptForm.patchValue(data);
   }
-
-  // categoryComparer(a: any, b: any): boolean {
-  //   return a && b ? a.CategoryName == b.CategoryName : false;
-  // }
 
   removeReceiptItem(item: FormGroup) {
     this.receiptDataService.removeReceiptItem(item.value);
