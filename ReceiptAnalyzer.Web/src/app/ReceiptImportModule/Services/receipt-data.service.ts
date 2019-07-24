@@ -35,6 +35,10 @@ export class ReceiptDataService {
     this.subject.next(this._receiptData);
   }
 
+  /**
+   * Previous ReceiptItems collection will be replaced with a new one.
+   * @param items 
+   */
   addProductItems(items: ReceiptItem[]) {
     this._receiptData.items = items;
     this.subject.next(this._receiptData);

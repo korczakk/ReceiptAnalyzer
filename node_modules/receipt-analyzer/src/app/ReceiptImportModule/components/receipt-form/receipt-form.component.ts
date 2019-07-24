@@ -88,5 +88,11 @@ export class ReceiptFormComponent implements OnInit {
     this.receiptDataService.removeReceiptItem(item.value);
   }
 
-  saveReceiptFormData() { console.log(this.receiptForm.value); }
+  saveReceiptFormData() { 
+    console.log(this.receiptForm.value); 
+  }
+
+  inputChanged() {
+    this.receiptDataService.addProductItems(this.itemsForm.value);
+  }
 }

@@ -33,9 +33,9 @@
     <ul class="list-group">
       <div formArrayName="items" *ngFor="let item of itemsForm.controls; let i = index">
         <li [formGroupName]="i" class="list-group-item list-group-item-light d-flex px-0 border-0">
-          <input type="text" formControlName="productName" class="form-control mr-1 product-name" />
-          <input type="number" formControlName="productsQuantity" class="form-control quantity-control mr-1 " />
-          <input type="number" formControlName="productPrice" class="form-control productprice-control mr-1" />
+          <input type="text" formControlName="productName" (change)="inputChanged()" class="form-control mr-1 product-name" />
+          <input type="number" formControlName="productsQuantity" (change)="inputChanged()" class="form-control quantity-control mr-1 " />
+          <input type="number" formControlName="productPrice" (change)="inputChanged()" class="form-control productprice-control mr-1" />
           <select formControlName="productCategory" class="form-control category-control w-25">
             <option></option>
             <option *ngFor="let category of productCategories" [ngValue]="category">{{category.CategoryName}}</option>
