@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ImageFileService } from '../../Services/image-file.service';
+import JsImageZoom from 'node_modules/js-image-zoom'
 
 @Component({
   selector: 'app-image-preview',
@@ -31,5 +32,18 @@ export class ImagePreviewComponent implements OnInit {
     this.fileService.convertToDataUrl(file).subscribe(x => {
       this.selectedImage = x;
     });
+  }
+
+  imageLoaded() {
+    var options = {
+      width: 400,
+      zoomWidth: 600,
+      offset: { vertical: 0, horizontal: 10 },
+      zoomStyle: 'z-index: 1000; border: 1px solid grey;'
+    };
+
+    let elem = document.getElementById("imageBox");
+
+    JsImageZoom(elem, options);
   }
 }
