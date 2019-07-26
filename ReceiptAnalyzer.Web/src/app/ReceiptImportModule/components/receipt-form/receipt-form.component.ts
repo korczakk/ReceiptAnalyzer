@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { distinctUntilChanged } from 'rxjs/operators';
 import { ReceiptDataService } from "../../Services/receipt-data.service";
 import { Receipt } from '../../interfaces/receipt';
 import { IProductCategory } from '../../interfaces/iproduct-category';
@@ -7,7 +6,6 @@ import { DictionariesService } from '../../Services/dictionaries.service';
 import { IStore } from '../../interfaces/istore';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ReceiptFormUpdatingProgress } from '../../interfaces/ReceiptFormUpdatingProgress';
-import { ReceiptItem } from '../../interfaces/receipt-item';
 
 
 @Component({
@@ -48,16 +46,6 @@ export class ReceiptFormComponent implements OnInit {
       this.createReceiptItem(data.items.length);
       this.populateReceiptForm(data);
     });
-
-    // this.itemsForm.valueChanges
-    //   .pipe(
-    //     distinctUntilChanged((prev: ReceiptItem[], curr: ReceiptItem[]) => {
-          
-    //       return JSON.stringify(prev) === JSON.stringify(curr);
-    //     }))
-    //   .subscribe(val => {
-    //     this.receiptDataService.addProductItems(val);
-    //   });
 
     this.dictionariesService.getStores().subscribe(data => {
       this.stores = data;
