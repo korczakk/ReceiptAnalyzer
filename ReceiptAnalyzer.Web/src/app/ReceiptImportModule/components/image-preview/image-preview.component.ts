@@ -29,21 +29,24 @@ export class ImagePreviewComponent implements OnInit {
   public createPreview(file) {
     if (!file) return;
 
-    this.fileService.convertToDataUrl(file).subscribe(x => {
+    this.fileService.convertToDataUrl(file).subscribe(x => {            
       this.selectedImage = x;
     });
   }
 
-  imageLoaded() {
+  imageLoaded() {   
+
+    let image = document.getElementById('image');
+
     var options = {
-      width: 400,
+      width: 0,
       zoomWidth: 600,
-      offset: { vertical: 0, horizontal: 10 },
+      offset: { vertical: 0, horizontal: 5 },
       zoomStyle: 'z-index: 1000; border: 1px solid grey;'
     };
 
     let elem = document.getElementById("imageBox");
 
-    JsImageZoom(elem, options);
+    new JsImageZoom(elem, options);
   }
 }
