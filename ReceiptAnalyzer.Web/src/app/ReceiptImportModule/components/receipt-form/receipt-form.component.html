@@ -30,6 +30,9 @@
     <div *ngIf="itemsForm.controls.length == 0">
       Brak produktów
     </div>
+    <div class="text-danger" *ngIf="!isItemsFormValid()">
+      Conajmniej jeden produkt jest wymagany.
+    </div>
     <ul class="list-group">
       <div formArrayName="items" *ngFor="let item of itemsForm.controls; let i = index">
         <li [formGroupName]="i" class="list-group-item list-group-item-light d-flex px-0 border-0">

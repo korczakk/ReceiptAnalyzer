@@ -30,10 +30,10 @@ export class ReceiptFormComponent implements OnInit {
 
   ngOnInit() {
     this.receiptForm = this.fb.group({
-      store: [''],
+      store: ['', Validators.required],
       shoppingDate: [null, Validators.required],
-      totalAmount: [],
-      items: this.fb.array([])
+      totalAmount: [0, Validators.required],
+      items: this.fb.array(['', Validators.required])
     });
 
     this.itemsForm = this.receiptForm.get("items") as FormArray;
@@ -82,5 +82,9 @@ export class ReceiptFormComponent implements OnInit {
 
   inputChanged() {
     this.receiptDataService.addProductItems(this.itemsForm.value);
+  }
+
+  isItemsFormValid(): boolean {
+    return (this.itemsForm.controls.length > 0 && !this.formUpdatingProgress.updatingReceiptItems) || (!this.receiptForm.touched && !this.formUpdatingProgress.updatingReceiptItems);
   }
 }
