@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable, BehaviorSubject } from "rxjs";
+import { Observable, BehaviorSubject, Subject } from "rxjs";
 import { Receipt } from "../interfaces/receipt";
 import { ReceiptItem } from "../interfaces/receipt-item";
 import { IStore } from "../interfaces/istore";
@@ -10,9 +10,7 @@ export class ReceiptDataService {
 
   private _receiptData: Receipt = new Receipt();
 
-  private subject: BehaviorSubject<Receipt> = new BehaviorSubject<Receipt>(
-    this._receiptData
-  );
+  private subject: Subject<Receipt> = new Subject<Receipt>();
   public receiptData: Observable<Receipt> = this.subject.asObservable();
 
   addShoppingDate(resultDate: string) {

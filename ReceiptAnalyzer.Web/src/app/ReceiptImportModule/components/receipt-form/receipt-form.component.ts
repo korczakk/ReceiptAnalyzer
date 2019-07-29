@@ -7,7 +7,6 @@ import { IStore } from '../../interfaces/istore';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ReceiptFormUpdatingProgress } from '../../interfaces/ReceiptFormUpdatingProgress';
 
-
 @Component({
   selector: "app-receipt-form",
   templateUrl: "./receipt-form.component.html",
@@ -32,8 +31,8 @@ export class ReceiptFormComponent implements OnInit {
     this.receiptForm = this.fb.group({
       store: ['', Validators.required],
       shoppingDate: [null, Validators.required],
-      totalAmount: [0, Validators.required],
-      items: this.fb.array(['', Validators.required])
+      totalAmount: ['', [Validators.required, Validators.min(0.01) ]],
+      items: this.fb.array([this.buildReceiptItem()], Validators.required)
     });
 
     this.itemsForm = this.receiptForm.get("items") as FormArray;
@@ -53,31 +52,38 @@ export class ReceiptFormComponent implements OnInit {
   }
 
   createReceiptItem(numberOfItems: number) {
-    this.itemsForm.controls.splice(0);    
+    this.itemsForm.controls.splice(0);
 
     for (let i = 0; i < numberOfItems; i++) {
-      let item: FormGroup = this.fb.group({
-        productName: [],
-        productsQuantity: [],
-        productPrice: [],
-        productCategory: [],
-        rowKey: []
-      })
+      let item: FormGroup = this.buildReceiptItem();
 
       this.itemsForm.push(item);
     }
   }
 
+  buildReceiptItem(): FormGroup {
+    return this.fb.group({
+      productName: ['', Validators.required],
+      productsQuantity: ['', [Validators.required, Validators.min(0.01) ]],
+      productPrice: ['', [Validators.required, Validators.min(0.01) ]],
+      productCategory: ['', Validators.required],
+      rowKey: []
+    });
+  }
+
   populateReceiptForm(data: Receipt) {
     this.receiptForm.patchValue(data);
+
+    this.receiptForm.markAsTouched();
+    this.itemsForm.markAsTouched();
   }
 
   removeReceiptItem(item: FormGroup) {
     this.receiptDataService.removeReceiptItem(item.value);
   }
 
-  saveReceiptFormData() { 
-    console.log(this.receiptForm.value); 
+  saveReceiptFormData() {
+    console.log(this.receiptForm.value);
   }
 
   inputChanged() {
@@ -85,6 +91,11 @@ export class ReceiptFormComponent implements OnInit {
   }
 
   isItemsFormValid(): boolean {
-    return (this.itemsForm.controls.length > 0 && !this.formUpdatingProgress.updatingReceiptItems) || (!this.receiptForm.touched && !this.formUpdatingProgress.updatingReceiptItems);
+    if (this.itemsForm.controls.length > 0) {
+      return this.itemsForm.valid || !this.itemsForm.touched;
+    }
+    else {
+     return false;
+    }
   }
 }

@@ -1,9 +1,9 @@
 export class ReceiptFormUpdatingProgress {
 
-    updatingStore = false;
-    updatingShoppingDate = false;
-    updatingTotalAmount = false;
-    updatingReceiptItems = false;
+    updatingStore;
+    updatingShoppingDate ;
+    updatingTotalAmount;
+    updatingReceiptItems ;
 
     setAllToTrue() {
         this.updatingStore = true;
