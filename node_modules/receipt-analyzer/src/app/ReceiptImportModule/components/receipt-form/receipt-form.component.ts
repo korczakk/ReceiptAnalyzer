@@ -6,6 +6,7 @@ import { DictionariesService } from '../../Services/dictionaries.service';
 import { IStore } from '../../interfaces/istore';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ReceiptFormUpdatingProgress } from '../../interfaces/ReceiptFormUpdatingProgress';
+import { ReceiptItem } from '../../interfaces/receipt-item';
 
 @Component({
   selector: "app-receipt-form",
@@ -83,7 +84,7 @@ export class ReceiptFormComponent implements OnInit {
   }
 
   saveReceiptFormData() {
-    console.log(this.receiptForm.value);
+    console.log('');
   }
 
   inputChanged() {
@@ -97,5 +98,9 @@ export class ReceiptFormComponent implements OnInit {
     else {
      return false;
     }
+  }
+
+  addReceiptItem() {
+    this.receiptDataService.addNewProductItem('', '', '');
   }
 }
