@@ -34,10 +34,18 @@ namespace DataAccessAPI.Model
 
     public new IDictionary<string, EntityProperty> WriteEntity(OperationContext operationContext)
     {
-      EntityProperty store = EntityProperty.GeneratePropertyForString(JsonConvert.SerializeObject(this.store));
+      var store = EntityProperty.GeneratePropertyForString(JsonConvert.SerializeObject(this.store));
+      var shoppingDate = EntityProperty.GeneratePropertyForString(this.shoppingDate.ToString("YYYY-MM-ddTHH.mm.ss.fffZ"));
+      var totalAmount = EntityProperty.GeneratePropertyForDouble(this.TotalAmount);
+      var items = EntityProperty.GeneratePropertyForString(JsonConvert.SerializeObject(this.Items));
 
-      var propertiesDictionary = new Dictionary<string, EntityProperty>();
-      propertiesDictionary.Add("store", store);
+      var propertiesDictionary = new Dictionary<string, EntityProperty>()
+      {
+        {"store", store },
+        {"shoppingDate", shoppingDate },
+        {"totalAmount", totalAmount },
+        {"items", items }
+      };      
 
       return propertiesDictionary;
     }
