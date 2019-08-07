@@ -43,7 +43,7 @@
       Brak produktów
     </div>
     <div class="text-danger" *ngIf="!isItemsFormValid()">
-      Conajmniej jeden produkt jest wymagany.
+      Wszystkie pola są wymagane.
     </div>
     <ul class="list-group">
       <div formArrayName="items" *ngFor="let item of itemsForm.controls; let i = index">
