@@ -1,7 +1,6 @@
-using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +12,9 @@ using Microsoft.WindowsAzure.Storage.Table;
 using DataAccessAPI.Model;
 using System.Linq;
 using System.Text;
+
+using DataAccessAPI.Entities;
+using DataAccessAPI.Repository;
 
 namespace DataAccessAPI
 {
@@ -31,11 +33,20 @@ namespace DataAccessAPI
           Content = new StringContent("Incorrect connection string to Azure Storage Account.")
         };
 
-      TableQuerySegment<ProductCategory> result = await StorageHelper.GetDataFromTable<ProductCategory>("Categories", cn);
+      IRepository<ProductCategoryEntity> repository = new Repository<ProductCategoryEntity>(cn);
+
+      TableQuerySegment<ProductCategoryEntity> result = await repository.GetAll<ProductCategoryEntity>("Categories");
+
+      List<ProductCategory> categories = result.Results.Select(
+        c => new ProductCategory()
+        {
+          RowKey = c.RowKey,
+          CategoryName = c.categoryName
+        }).ToList();
 
       return new HttpResponseMessage(HttpStatusCode.OK)
       {
-        Content = new StringContent(JsonConvert.SerializeObject(result.Results.ToList()), Encoding.UTF8, "application/json")
+        Content = new StringContent(JsonConvert.SerializeObject(categories), Encoding.UTF8, "application/json")
       };
     }
   }

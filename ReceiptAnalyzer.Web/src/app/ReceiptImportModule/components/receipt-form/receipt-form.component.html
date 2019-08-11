@@ -4,7 +4,7 @@
     <div class="row">
       <select id="store" formControlName="store" class="form-control w-50">
         <option value="" Wybierz sklep...></option>
-        <option *ngFor="let store of stores" [ngValue]="store">{{store?.StoreName}}</option>
+        <option *ngFor="let store of stores" [ngValue]="store">{{store?.storeName}}</option>
       </select>
       <i class="fa fa-spinner fa-fw fa-pulse fa-2x  ml-3" *ngIf="formUpdatingProgress?.updatingStore"></i>
     </div>
@@ -57,7 +57,7 @@
           <select formControlName="productCategory" (change)="inputChanged()"
             class="form-control category-control w-25" tabindex="4">
             <option></option>
-            <option *ngFor="let category of productCategories" [ngValue]="category">{{category.CategoryName}}</option>
+            <option *ngFor="let category of productCategories" [ngValue]="category">{{category.categoryName}}</option>
           </select>
           <i class="fa fa-times text-danger ml-2 fa-2x" (click)="removeReceiptItem(item)"></i>
         </li>

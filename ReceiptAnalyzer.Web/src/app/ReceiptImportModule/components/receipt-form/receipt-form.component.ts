@@ -7,6 +7,7 @@ import { IStore } from '../../interfaces/istore';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ReceiptFormUpdatingProgress } from '../../interfaces/ReceiptFormUpdatingProgress';
 import { ReceiptItem } from '../../interfaces/receipt-item';
+import { ReceiptStorageService } from '../../Services/receipt-storage.service';
 
 @Component({
   selector: "app-receipt-form",
@@ -25,7 +26,8 @@ export class ReceiptFormComponent implements OnInit {
   constructor(
     private receiptDataService: ReceiptDataService,
     private dictionariesService: DictionariesService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private receiptStorageService: ReceiptStorageService
   ) { }
 
   ngOnInit() {
@@ -84,7 +86,15 @@ export class ReceiptFormComponent implements OnInit {
   }
 
   saveReceiptFormData() {
-    console.log('');
+    this.receiptStorageService.addNewReceipt(this.receiptForm.value).subscribe(
+      result => {
+        console.log(result);
+        alert('Saved!');
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   inputChanged() {

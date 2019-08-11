@@ -131,7 +131,7 @@ export class ReceiptProcessorService {
 
       for (let i: number = 0; recognizedText.lines.length; i++) {
 
-        store = stores.find(x => x.StoreName == recognizedText.lines[i].text.trim());
+        store = stores.find(x => x.storeName == recognizedText.lines[i].text.trim());
 
         if (store || markOfSectionEnding.test(recognizedText.lines[i].text))
           break;

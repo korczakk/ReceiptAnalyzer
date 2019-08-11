@@ -20,17 +20,5 @@ namespace DataAccessAPI
 
       return config.GetConnectionString("default");
     }
-
-    static public async Task<TableQuerySegment<T>> GetDataFromTable<T>(string tableName, string cn) where T : ITableEntity, new()
-    {
-      var account = CloudStorageAccount.Parse(cn);
-
-      var tableClient = account.CreateCloudTableClient();
-      var table = tableClient.GetTableReference(tableName);
-
-      TableQuerySegment<T> result = await table.ExecuteQuerySegmentedAsync<T>(new TableQuery<T>(), null);
-
-      return result;
-    }
   }
 }
