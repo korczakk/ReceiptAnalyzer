@@ -35,7 +35,8 @@ export class ReceiptFormComponent implements OnInit {
       store: ['', Validators.required],
       shoppingDate: [null, Validators.required],
       totalAmount: ['', [Validators.required, Validators.min(0.01) ]],
-      items: this.fb.array([this.buildReceiptItem()], Validators.required)
+      //items: this.fb.array([this.buildReceiptItem()], Validators.required)
+      items: this.fb.array([], Validators.required)
     });
 
     this.itemsForm = this.receiptForm.get("items") as FormArray;
@@ -88,29 +89,35 @@ export class ReceiptFormComponent implements OnInit {
   saveReceiptFormData() {
     this.receiptStorageService.addNewReceipt(this.receiptForm.value).subscribe(
       result => {
-        console.log(result);
-        alert('Saved!');
+        this.receiptDataService.clear();
+        this.receiptForm.reset();
+        alert('Saved!');        
       },
       error => {
         console.log(error);
+        alert('Error. Not saved!');
       }
     );
   }
 
-  inputChanged() {
+  itemsInputChanged() {
     this.receiptDataService.addProductItems(this.itemsForm.value);
   }
 
-  isItemsFormValid(): boolean {
-    if (this.itemsForm.controls.length > 0) {
-      return this.itemsForm.valid || !this.itemsForm.touched;
-    }
-    else {
-     return false;
-    }
+  shoppingDateChanged() {
+    this.receiptDataService.addShoppingDate(this.receiptForm.get('shoppingDate').value);
+  }
+
+  storeInputChanged() {
+    this.receiptDataService.addStore(this.receiptForm.get('store').value);
+  }
+
+  totalAmouontInputChanged() {
+    this.receiptDataService.addTotalAmount(this.receiptForm.get('totalAmount').value);
   }
 
   addReceiptItem() {
-    this.receiptDataService.addNewProductItem('', '', '');
+    //this.receiptDataService.addNewProductItem('', '', '');   
+    this.itemsForm.push(this.buildReceiptItem());
   }
 }

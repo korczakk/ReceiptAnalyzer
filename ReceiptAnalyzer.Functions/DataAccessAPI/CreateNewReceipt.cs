@@ -28,7 +28,7 @@ namespace DataAccessAPI
       string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
       Receipt receipt = JsonConvert.DeserializeObject<Receipt>(requestBody);
 
-      receipt.RowKey = new Guid().ToString();
+      receipt.RowKey = Guid.NewGuid().ToString();
 
       string cn = StorageHelper.GetConnectionString(context);
 

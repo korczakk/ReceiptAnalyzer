@@ -21,15 +21,15 @@ export class ReceiptImportMainComponent implements OnInit {
     private ocrService: AzureOcrServiceBase,
     private receiptProcessor: ReceiptProcessorService,
     private receiptDataService: ReceiptDataService
-  ) {}
+  ) { }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.formUpdatingProgress = new ReceiptFormUpdatingProgress();
-   }
+  }
 
   public onFileSelected(file) {
     if (!file) return;
-    
+
     let errorMessage = this.fileService.validateImageFile(file);
     if (errorMessage != "") {
       alert(errorMessage);
@@ -38,17 +38,19 @@ export class ReceiptImportMainComponent implements OnInit {
 
     this.file = file;
 
-    this.receiptDataService.clear(); 
+    this.receiptDataService.clear();
     this.ocrResult = {} as IOcrRecognitionResult;
   }
 
-  public onSubmit() {  
+  public onSubmit() {
+    if (!this.file) return;
+
     this.formUpdatingProgress.setAllToTrue();
-    
+
     this.ocrService.processImageWithOcr(this.file).subscribe(
       res => {
-        this.ocrResult = res;      
-        
+        this.ocrResult = res;
+
 
         //handle automatic form filling after OCR         
         this.receiptProcessor.retriveShoppingDate(res).subscribe(shoppingDate => {
