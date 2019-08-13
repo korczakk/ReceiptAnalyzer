@@ -7,6 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   public title = 'ReceiptAnalyzer';
-  
-  public env =  process.env.WEBSITE_NODE_DEFAULT_VERSION;
 }
