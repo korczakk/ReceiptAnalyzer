@@ -1,5 +1,7 @@
+using System;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Azure.WebJobs;
 using Microsoft.WindowsAzure.Storage;
@@ -19,6 +21,17 @@ namespace DataAccessAPI
         .Build();
 
       return config.GetConnectionString("default");
+    }
+
+    static public string GetEnvironmentVariable(string variableName, ExecutionContext context)
+    {
+      var config = new ConfigurationBuilder()
+        .SetBasePath(context.FunctionAppDirectory)
+        .AddJsonFile("local.settings.json", optional: true)
+        .AddEnvironmentVariables()
+        .Build();
+
+      return config[variableName];
     }
   }
 }
