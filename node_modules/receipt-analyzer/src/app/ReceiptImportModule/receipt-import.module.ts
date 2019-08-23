@@ -15,6 +15,7 @@ import { AzureOcrServiceBase } from './interfaces/AzureOcrServiceBase';
 import { AzureOcrService } from './Services/azure-ocr.service';
 import { ReceiptDataService } from './Services/receipt-data.service';
 import { DictionariesService } from './Services/dictionaries.service';
+import { SpellCheckingService } from './Services/spell-checking.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { DictionariesService } from './Services/dictionaries.service';
     { provide: AzureOcrServiceBase, useClass: AzureOcrServiceMock },
     ReceiptProcessorService,
     ReceiptDataService,
-    DictionariesService
+    DictionariesService,
+    SpellCheckingService
   ]
 })
 export class ReceiptImportModule { }

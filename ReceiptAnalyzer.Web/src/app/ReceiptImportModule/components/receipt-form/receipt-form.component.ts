@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ReceiptFormUpdatingProgress } from '../../interfaces/ReceiptFormUpdatingProgress';
 import { ReceiptItem } from '../../interfaces/receipt-item';
 import { ReceiptStorageService } from '../../Services/receipt-storage.service';
+import { SpellcheckModel } from '../../interfaces/spellcheck-model';
 
 @Component({
   selector: "app-receipt-form",
@@ -16,6 +17,7 @@ import { ReceiptStorageService } from '../../Services/receipt-storage.service';
 })
 export class ReceiptFormComponent implements OnInit {
   @Input() formUpdatingProgress: ReceiptFormUpdatingProgress;
+  @Input() spellCheckSuggestions: SpellcheckModel;
 
   public productCategories: IProductCategory[];
   public stores: IStore[];
