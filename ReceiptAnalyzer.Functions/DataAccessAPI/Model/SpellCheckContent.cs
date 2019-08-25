@@ -7,6 +7,6 @@ namespace DataAccessAPI.Model
   public class SpellCheckContent
   {
     public string Text { get; set; }
-    public List<string> SuggestedCorrection { get; set; }
+    public Dictionary<string, string> SuggestedCorrection { get; set; }
   }
 }

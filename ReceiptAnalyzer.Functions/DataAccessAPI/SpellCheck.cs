@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Http;
 
 using DataAccessAPI.Model;
 
@@ -12,9 +10,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.CognitiveServices.Language.SpellCheck;
-using Microsoft.Azure.CognitiveServices.Language.SpellCheck.Models;
 using Microsoft.Extensions.Logging;
-using Microsoft.Rest;
 
 using Newtonsoft.Json;
 
@@ -37,9 +33,9 @@ namespace DataAccessAPI
       Dictionary<string, SpellCheckContent> data =
         JsonConvert.DeserializeObject<Dictionary<string, SpellCheckContent>>(requestBody);
 
-      if(data == null)
+      if (data == null)
         return new BadRequestObjectResult("Brak danych do analizy.");
-      
+
       string cognitiveServiceKey = StorageHelper.GetEnvironmentVariable("CognitiveServiceKey", context);
 
       if (string.IsNullOrEmpty(cognitiveServiceKey))
@@ -57,13 +53,13 @@ namespace DataAccessAPI
     {
       foreach (var singleInput in inputsToCheck)
       {
-        List<string> suggestions = await GetResultsFromSpellingApi(singleInput.Value.Text);
+        Dictionary<string, string> suggestions = await GetResultsFromSpellingApi(singleInput.Value.Text);
 
         inputsToCheck[singleInput.Key].SuggestedCorrection = suggestions;
       }
     }
 
-    private static async Task<List<string>> GetResultsFromSpellingApi(string text)
+    private static async Task<Dictionary<string, string>> GetResultsFromSpellingApi(string text)
     {
       var response = await spellCheckClient.SpellCheckerWithHttpMessagesAsync(
         text: text,
@@ -71,11 +67,17 @@ namespace DataAccessAPI
         mode: "spell");
 
       if (response.Body.FlaggedTokens.Count == 0)
-        return new List<string>();
+        return new Dictionary<string, string>();
 
-      var flattern = response.Body.FlaggedTokens.SelectMany(x => x.Suggestions).ToList();
+      var flattern = response.Body.FlaggedTokens.SelectMany(x =>
+      x.Suggestions,
+      (token, sugg) => new
+      {
+        Token = token.Token,
+        Suggestion = sugg.Suggestion
+      });
 
-      return flattern.Select(x => x.Suggestion).ToList();
+      return flattern.ToDictionary(x => x.Token, y => y.Suggestion);
     }
   }
 }
