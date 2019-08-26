@@ -9,15 +9,17 @@ export class SpellCheckingService {
 
   constructor(private http: HttpClient) { }
 
-  public checkSpelling(items: ReceiptItem[]): Observable<SpellcheckModel> {
-    let linesToSpellCheck = new SpellcheckModel();
+  public checkSpelling(items: ReceiptItem[]): Observable<SpellcheckModel[]> {
+    let linesToSpellCheck: {
+      [rowKey: string]: string
+    } = {};
     
     items.map(receiptItem => {
-      linesToSpellCheck[receiptItem.rowKey] = { text: receiptItem.productName, suggestions: []};
+      linesToSpellCheck[receiptItem.rowKey] = receiptItem.productName;
     });
     
     //call API
-    return this.http.post<SpellcheckModel>("https://dataaccessapifunction.azurewebsites.net/api/SpellCheck?code=fAaQ7uJXwmXDv4EcWAZN7cARD4SY8zBW33KYO084nztlAClt7CJxJQ==", 
+    return this.http.post<SpellcheckModel[]>("https://dataaccessapifunction.azurewebsites.net/api/SpellCheck?code=fAaQ7uJXwmXDv4EcWAZN7cARD4SY8zBW33KYO084nztlAClt7CJxJQ==", 
     JSON.stringify(linesToSpellCheck));
   }
 }

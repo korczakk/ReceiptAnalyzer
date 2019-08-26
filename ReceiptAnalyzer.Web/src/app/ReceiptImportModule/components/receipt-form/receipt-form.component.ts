@@ -4,11 +4,12 @@ import { Receipt } from '../../interfaces/receipt';
 import { IProductCategory } from '../../interfaces/iproduct-category';
 import { DictionariesService } from '../../Services/dictionaries.service';
 import { IStore } from '../../interfaces/istore';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
 import { ReceiptFormUpdatingProgress } from '../../interfaces/ReceiptFormUpdatingProgress';
 import { ReceiptItem } from '../../interfaces/receipt-item';
 import { ReceiptStorageService } from '../../Services/receipt-storage.service';
 import { SpellcheckModel } from '../../interfaces/spellcheck-model';
+import { SpellingFlaggedToken } from '../../interfaces/spelling-flagged-token';
 
 @Component({
   selector: "app-receipt-form",
@@ -17,7 +18,7 @@ import { SpellcheckModel } from '../../interfaces/spellcheck-model';
 })
 export class ReceiptFormComponent implements OnInit {
   @Input() formUpdatingProgress: ReceiptFormUpdatingProgress;
-  @Input() spellCheckSuggestions: SpellcheckModel;
+  @Input() spellCheckSuggestions: SpellcheckModel[];
 
   public productCategories: IProductCategory[];
   public stores: IStore[];
@@ -36,7 +37,7 @@ export class ReceiptFormComponent implements OnInit {
     this.receiptForm = this.fb.group({
       store: ['', Validators.required],
       shoppingDate: [null, Validators.required],
-      totalAmount: ['', [Validators.required, Validators.min(0.01) ]],
+      totalAmount: ['', [Validators.required, Validators.min(0.01)]],
       //items: this.fb.array([this.buildReceiptItem()], Validators.required)
       items: this.fb.array([], Validators.required)
     });
@@ -70,8 +71,8 @@ export class ReceiptFormComponent implements OnInit {
   buildReceiptItem(): FormGroup {
     return this.fb.group({
       productName: ['', Validators.required],
-      productsQuantity: ['', [Validators.required, Validators.min(0.01) ]],
-      productPrice: ['', [Validators.required, Validators.min(0.01) ]],
+      productsQuantity: ['', [Validators.required, Validators.min(0.01)]],
+      productPrice: ['', [Validators.required, Validators.min(0.01)]],
       productCategory: ['', Validators.required],
       rowKey: []
     });
@@ -93,7 +94,7 @@ export class ReceiptFormComponent implements OnInit {
       result => {
         this.receiptDataService.clear();
         this.receiptForm.reset();
-        alert('Saved!');        
+        alert('Saved!');
       },
       error => {
         console.log(error);
@@ -119,7 +120,30 @@ export class ReceiptFormComponent implements OnInit {
   }
 
   addReceiptItem() {
-    //this.receiptDataService.addNewProductItem('', '', '');   
     this.itemsForm.push(this.buildReceiptItem());
+  }
+
+  checkIfSpellingCorrectionExists(rowKey: FormControl): boolean {
+    return this.spellCheckSuggestions.find(x => x.rowKey === rowKey.get("rowKey").value).spellingFlaggedToken.length > 0;
+  }
+
+  getSpellingCheckResult(rowKey: FormControl): SpellingFlaggedToken[] {
+    if (!this.spellCheckSuggestions)
+      return;
+
+    let flaggedTokens: SpellingFlaggedToken[] = this.spellCheckSuggestions.find(x => x.rowKey === rowKey.get("rowKey").value).spellingFlaggedToken;
+
+    let newarr  = [];
+    
+    flaggedTokens.map(t => {
+      t.suggestions.map(sugg => {
+        newarr.push({
+          token: t.token,
+          suggestion: sugg.suggestion
+        });
+      });
+    });
+
+    return newarr;
   }
 }

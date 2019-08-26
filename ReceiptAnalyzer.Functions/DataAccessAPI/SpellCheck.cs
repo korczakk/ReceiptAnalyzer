@@ -10,6 +10,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.CognitiveServices.Language.SpellCheck;
+using Microsoft.Azure.CognitiveServices.Language.SpellCheck.Models;
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
@@ -30,8 +31,8 @@ namespace DataAccessAPI
       log.LogInformation("SpellCheck function is starting.");
 
       string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-      Dictionary<string, SpellCheckContent> data =
-        JsonConvert.DeserializeObject<Dictionary<string, SpellCheckContent>>(requestBody);
+      Dictionary<string, string> data =
+        JsonConvert.DeserializeObject<Dictionary<string, string>>(requestBody);
 
       if (data == null)
         return new BadRequestObjectResult("Brak danych do analizy.");
@@ -41,43 +42,36 @@ namespace DataAccessAPI
       if (string.IsNullOrEmpty(cognitiveServiceKey))
         return new BadRequestObjectResult("Brak klucza do usługi Bing Spell Check.");
 
-      spellCheckClient = new SpellCheckClient(new ApiKeyServiceClientCredentials("97317aecbf0048879b3f65f91d5f63cc"));
+      spellCheckClient = new SpellCheckClient(new ApiKeyServiceClientCredentials(cognitiveServiceKey));
 
       //Updates each row with spelling check results
-      await UpdateWithCheckResults(data);
+      var checkResults = await CheckSpelling(data);
 
-      return (ActionResult)new OkObjectResult(JsonConvert.SerializeObject(data));
+      return (ActionResult)new OkObjectResult(JsonConvert.SerializeObject(checkResults));
     }
 
-    private static async Task UpdateWithCheckResults(Dictionary<string, SpellCheckContent> inputsToCheck)
+    private static async Task<List<SpellingCheckResult>> CheckSpelling(Dictionary<string, string> textsToCheck)
     {
-      foreach (var singleInput in inputsToCheck)
-      {
-        Dictionary<string, string> suggestions = await GetResultsFromSpellingApi(singleInput.Value.Text);
+      List<SpellingCheckResult> result = new List<SpellingCheckResult>();
 
-        inputsToCheck[singleInput.Key].SuggestedCorrection = suggestions;
+      foreach (var text in textsToCheck)
+      {
+        var response = await spellCheckClient.SpellCheckerWithHttpMessagesAsync(
+          text: text.Value,
+          market: "pl-PL",
+          mode: "spell");
+
+        if (response.Body.FlaggedTokens.Count == 0)
+          continue;
+
+        result.Add(new SpellingCheckResult
+        {
+          RowKey = text.Key,
+          SpellingFlaggedToken = response.Body.FlaggedTokens
+        });
       }
-    }
 
-    private static async Task<Dictionary<string, string>> GetResultsFromSpellingApi(string text)
-    {
-      var response = await spellCheckClient.SpellCheckerWithHttpMessagesAsync(
-        text: text,
-        market: "pl-PL",
-        mode: "spell");
-
-      if (response.Body.FlaggedTokens.Count == 0)
-        return new Dictionary<string, string>();
-
-      var flattern = response.Body.FlaggedTokens.SelectMany(x =>
-      x.Suggestions,
-      (token, sugg) => new
-      {
-        Token = token.Token,
-        Suggestion = sugg.Suggestion
-      });
-
-      return flattern.ToDictionary(x => x.Token, y => y.Suggestion);
+      return result;
     }
   }
 }

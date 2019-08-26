@@ -17,7 +17,7 @@ export class ReceiptImportMainComponent implements OnInit {
   public file: File;
   public ocrResult: IOcrRecognitionResult = {} as IOcrRecognitionResult;
   formUpdatingProgress: ReceiptFormUpdatingProgress;
-  spellCheckSuggestions: SpellcheckModel;
+  spellCheckSuggestions: SpellcheckModel[];
 
   constructor(
     private fileService: ImageFileService,
@@ -79,7 +79,7 @@ export class ReceiptImportMainComponent implements OnInit {
           this.spellCheck.checkSpelling(products).subscribe(
             suggestions => {
               console.log(suggestions);
-
+              this.spellCheckSuggestions = suggestions;
               this.formUpdatingProgress.updatingReceiptItems = false;
             },
             error => {

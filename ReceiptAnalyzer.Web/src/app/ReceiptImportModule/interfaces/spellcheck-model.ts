@@ -1,6 +1,7 @@
+import { SpellingFlaggedToken } from './spelling-flagged-token';
+
 export class SpellcheckModel {
-    [rowKey: string]: {
-        text: string,
-        suggestions: string[]
-    }
+    rowKey: string;  
+    spellingFlaggedToken: SpellingFlaggedToken[];
+    
 }

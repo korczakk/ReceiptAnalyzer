@@ -56,11 +56,11 @@
           <div class="input-group mr-1 product-name">
             <input type="text" formControlName="productName" (change)="itemsInputChanged()"
               class="form-control " tabindex="1" />
-            <div class="input-group-append">
+            <div class="input-group-append" *ngIf="checkIfSpellingCorrectionExists(item)">
               <button class="btn btn-outline-warning dropdown-toggle" type="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">!</button>
               <ul class="dropdown-menu">
-                <li class="dropdown-item" *ngFor="let suggestion of spellCheckSuggestions">Action</li>
+                <li class="dropdown-item" *ngFor="let suggestion of getSpellingCheckResult(item)">{{suggestion.suggestion}}</li>
               </ul>
             </div>
           </div>
