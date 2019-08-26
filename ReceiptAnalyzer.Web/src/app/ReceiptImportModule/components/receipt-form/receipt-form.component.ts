@@ -124,6 +124,8 @@ export class ReceiptFormComponent implements OnInit {
   }
 
   checkIfSpellingCorrectionExists(rowKey: FormControl): boolean {
+    if(!this.spellCheckSuggestions)
+      return false;
     return this.spellCheckSuggestions.find(x => x.rowKey === rowKey.get("rowKey").value).spellingFlaggedToken.length > 0;
   }
 
@@ -145,5 +147,14 @@ export class ReceiptFormComponent implements OnInit {
     });
 
     return newarr;
+  }
+
+  fixSpelling(control: FormControl, suggestion: any) {
+    let rowKey = control.get("rowKey").value;
+    let productName: string = control.get("productName").value;
+
+    let fixedSpelling = productName.replace(suggestion.token, suggestion.suggestion);
+
+    this.receiptDataService.updateProductItem(rowKey, fixedSpelling, null, null);
   }
 }

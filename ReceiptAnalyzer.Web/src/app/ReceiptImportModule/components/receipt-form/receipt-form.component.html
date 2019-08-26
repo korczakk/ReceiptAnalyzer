@@ -60,7 +60,9 @@
               <button class="btn btn-outline-warning dropdown-toggle" type="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">!</button>
               <ul class="dropdown-menu">
-                <li class="dropdown-item" *ngFor="let suggestion of getSpellingCheckResult(item)">{{suggestion.suggestion}}</li>
+                <li class="dropdown-item cursor-pointer" (click)="fixSpelling(item, suggestion)" *ngFor="let suggestion of getSpellingCheckResult(item)">
+                  {{suggestion?.suggestion}}
+                </li>
               </ul>
             </div>
           </div>
