@@ -3,13 +3,15 @@ using System.Collections.Generic;
 
 using DataAccessAPI.Entities;
 
+using Microsoft.WindowsAzure.Storage.Table;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace DataAccessAPI.Model
 {
   [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-  public class Receipt
+  public class Receipt : ITableEntityConvertable<ReceiptEntity>
   {
     public Store Store { get; set; }
     public DateTime ShoppingDate { get; set; }
@@ -17,7 +19,7 @@ namespace DataAccessAPI.Model
     public List<ReceiptItem> Items { get; set; }
     public string RowKey { get; set; }
 
-    public ReceiptEntity ToReceiptEntity()
+    public ReceiptEntity ToTableEntity()
     {
       return new ReceiptEntity()
       {

@@ -33,7 +33,7 @@ namespace DataAccessAPI
       string cn = StorageHelper.GetConnectionString(context);
 
       IRepository<ReceiptEntity> repository = new Repository<ReceiptEntity>(cn);
-      await repository.AddEntity<ReceiptEntity>(receipt.ToReceiptEntity(), "Receipts");
+      await repository.AddEntity<ReceiptEntity>(receipt.ToTableEntity(), "Receipts");
 
       return new CreatedResult("", receipt);
 
