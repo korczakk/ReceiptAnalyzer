@@ -7,6 +7,8 @@ import { ReceiptDataService } from '../../Services/receipt-data.service';
 import { ReceiptFormUpdatingProgress } from '../../interfaces/ReceiptFormUpdatingProgress';
 import { SpellCheckingService } from '../../Services/spell-checking.service';
 import { SpellcheckModel } from '../../interfaces/spellcheck-model';
+import { DictionariesService } from '../../Services/dictionaries.service';
+import { ProductCategoriesMatch } from '../../interfaces/ProductCategoriesMatch';
 
 @Component({
   templateUrl: "./receipt-import-main.component.html",
@@ -18,17 +20,28 @@ export class ReceiptImportMainComponent implements OnInit {
   public ocrResult: IOcrRecognitionResult = {} as IOcrRecognitionResult;
   formUpdatingProgress: ReceiptFormUpdatingProgress;
   spellCheckSuggestions: SpellcheckModel[];
+  productCategoriesMatch: ProductCategoriesMatch[];
 
   constructor(
     private fileService: ImageFileService,
     private ocrService: AzureOcrServiceBase,
     private receiptProcessor: ReceiptProcessorService,
     private receiptDataService: ReceiptDataService,
-    private spellCheck: SpellCheckingService
+    private spellCheck: SpellCheckingService,
+    private dictionaries: DictionariesService
   ) { }
 
   ngOnInit() {
     this.formUpdatingProgress = new ReceiptFormUpdatingProgress();
+
+    if(this.productCategoriesMatch) {
+      this.dictionaries.getProductCategoriesMatch().subscribe(result => {
+        this.productCategoriesMatch = result;
+      },
+      error => {
+        console.log(error);
+      });
+    }    
   }
 
   public onFileSelected(file) {
@@ -86,9 +99,10 @@ export class ReceiptImportMainComponent implements OnInit {
               console.log(error);
 
               this.formUpdatingProgress.updatingReceiptItems = false;
-            })
-
-          
+            });
+            
+            //Try to guess what are a categories
+            
         });
 
       },

@@ -16,6 +16,7 @@ import { AzureOcrService } from './Services/azure-ocr.service';
 import { ReceiptDataService } from './Services/receipt-data.service';
 import { DictionariesService } from './Services/dictionaries.service';
 import { SpellCheckingService } from './Services/spell-checking.service';
+import { ProductCategorizationService } from './Services/product-categorization.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { SpellCheckingService } from './Services/spell-checking.service';
     ReceiptProcessorService,
     ReceiptDataService,
     DictionariesService,
-    SpellCheckingService
+    SpellCheckingService,
+    ProductCategorizationService
   ]
 })
 export class ReceiptImportModule { }

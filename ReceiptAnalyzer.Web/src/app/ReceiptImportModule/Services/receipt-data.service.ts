@@ -3,6 +3,7 @@ import { Observable, BehaviorSubject, Subject } from "rxjs";
 import { Receipt } from "../interfaces/receipt";
 import { ReceiptItem } from "../interfaces/receipt-item";
 import { IStore } from "../interfaces/istore";
+import { IProductCategory } from '../interfaces/iproduct-category';
 
 @Injectable()
 export class ReceiptDataService {
@@ -55,7 +56,8 @@ export class ReceiptDataService {
     rowKey: string,
     productName: string,
     price: string,
-    quantity: string
+    quantity: string,
+    category: IProductCategory = null
   ) {
     let newItem: ReceiptItem = this._receiptData.items.find(
       item => item.rowKey == rowKey
@@ -69,6 +71,8 @@ export class ReceiptDataService {
     if (price) newItem.productPrice = Number.parseFloat(price);
 
     if (quantity) newItem.productsQuantity = Number.parseFloat(quantity);
+
+    if (category) newItem.productCategory = category;
 
     this._receiptData.items[index] = newItem;
     this.subject.next(this._receiptData);

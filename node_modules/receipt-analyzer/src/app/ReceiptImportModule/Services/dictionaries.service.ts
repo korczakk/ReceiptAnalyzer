@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { store } from '@angular/core/src/render3';
 import { IProductCategory } from '../interfaces/iproduct-category';
+import { ProductCategoriesMatch } from '../interfaces/ProductCategoriesMatch';
 
 @Injectable()
 export class DictionariesService {
@@ -41,6 +42,14 @@ export class DictionariesService {
     }
         
     return this.categories.asObservable();
+  }
+
+  /**
+   * Generates a list of products with a matching categories.
+   */
+  public getProductCategoriesMatch() : Observable<ProductCategoriesMatch[]> {
+    return this.http.get<ProductCategoriesMatch[]>(
+      "https://dataaccessapifunction.azurewebsites.net/api/GetProductCategoriesMatch?code=IV30VdQUByTsQbWDxV0zxn61nLatVZAQxql38x/8DMwjKcUh6K5WXA==");
   }
 
   private retriveStoresFromAzureTable(): Observable<IStore[]> {

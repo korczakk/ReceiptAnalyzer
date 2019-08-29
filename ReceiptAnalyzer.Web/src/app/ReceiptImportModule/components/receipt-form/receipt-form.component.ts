@@ -10,6 +10,7 @@ import { ReceiptItem } from '../../interfaces/receipt-item';
 import { ReceiptStorageService } from '../../Services/receipt-storage.service';
 import { SpellcheckModel } from '../../interfaces/spellcheck-model';
 import { SpellingFlaggedToken } from '../../interfaces/spelling-flagged-token';
+import { ProductCategoriesMatch } from '../../interfaces/ProductCategoriesMatch';
 
 @Component({
   selector: "app-receipt-form",
@@ -38,7 +39,6 @@ export class ReceiptFormComponent implements OnInit {
       store: ['', Validators.required],
       shoppingDate: [null, Validators.required],
       totalAmount: ['', [Validators.required, Validators.min(0.01)]],
-      //items: this.fb.array([this.buildReceiptItem()], Validators.required)
       items: this.fb.array([], Validators.required)
     });
 
