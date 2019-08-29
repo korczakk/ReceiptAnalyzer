@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,6 +28,8 @@ namespace DataAccessAPI
       log.LogInformation("Starting function 'GetProductCategoriesMatch'");
 
       cn = StorageHelper.GetConnectionString(context);
+      if (cn == null)
+        return (ActionResult)new BadRequestObjectResult("Brak connection string.");
 
       List<ReceiptItem> receiptItems = await GetAllItems();
       var productsWithGroupedCategories = receiptItems.GroupBy(k => k.ProductName)
@@ -43,7 +42,7 @@ namespace DataAccessAPI
               CategoryName = c.Key,
               NumberOfCategories = c.Count()
             })
-              .OrderBy(o => o.NumberOfCategories)
+              .OrderByDescending(o => o.NumberOfCategories)
               .ToList()
         })
         .ToList();
@@ -55,17 +54,18 @@ namespace DataAccessAPI
     private static async Task<List<ReceiptItem>> GetAllItems()
     {
       Repository<ReceiptItemEntity> repo = new Repository<ReceiptItemEntity>(cn);
-      var segmentedResult = await repo.GetAll<ReceiptItemEntity>("ReceiptItems");
+      var segmentedResult = await repo.GetAll<ReceiptEntity>("Receipts");
 
-      return segmentedResult.Results.Select(
-          x => new ReceiptItem()
+      var receipts = segmentedResult.Results.Select(
+          x => new Receipt
           {
-            ProductCategory = JsonConvert.DeserializeObject<ProductCategory>(x.ProductCategory),
-            ProductName = x.ProductName,
-            ProductPrice = x.ProductPrice,
-            ProductsQuantity = x.ProductsQuantity
+            Items = JsonConvert.DeserializeObject<List<ReceiptItem>>(x.Items)
           })
         .ToList();
+
+      var receiptItems = receipts.SelectMany(src => src.Items).ToList();
+
+      return receiptItems;
     }
   }
 }
