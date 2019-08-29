@@ -5,8 +5,5 @@ import { SpellCheckingService } from './spell-checking.service';
 describe('SpellCheckingService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
-  it('should be created', () => {
-    const service: SpellCheckingService = TestBed.get(SpellCheckingService);
-    expect(service).toBeTruthy();
-  });
+
 });

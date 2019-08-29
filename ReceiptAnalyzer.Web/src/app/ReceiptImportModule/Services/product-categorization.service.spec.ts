@@ -5,8 +5,11 @@ import { ProductCategorizationService } from './product-categorization.service';
 describe('ProductCategorizationService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
-  it('should be created', () => {
-    const service: ProductCategorizationService = TestBed.get(ProductCategorizationService);
-    expect(service).toBeTruthy();
+  it('convertToMapOfWords', () => {
+    const service: ProductCategorizationService = new ProductCategorizationService();
+
+    //let words = service.convertToMapOfWords("Woda nestle Woda");
+
+    expect(words.size).toEqual(3);
   });
 });
