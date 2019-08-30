@@ -11,12 +11,12 @@ export class ProductCategorizationService {
   matchCategoryToProduct(items: ReceiptItem[], availableCategories: ProductCategoriesMatch[]) {
     this.productCategoriesMatch = availableCategories;
 
-    //Maps of words in each product name in Product-Categories array
+    //Map of words in each product name in Product-Categories array
     this.prepareListOfWords();
 
     let updatedItems = items.map<ReceiptItem>(item => {
 
-      let matchingRatio = this.matchProductName(item.productName);
+      let filteredProductCategories = this.filterProductCategories(item.productName);
 
       //próbuj znaleźć produkt o jak najwyższej liczbie pasujących słów i dla takiego dopasowanie weź pierwszą kategorię
 
@@ -30,12 +30,33 @@ export class ProductCategorizationService {
    * 
    * @param productName Name of the product to be found in Product - Categories array 
    */
-  private matchProductName(productName: string): number {
-    let wordsInTestedProductName: Map<String, string> = this.convertToMapOfWords(productName);
+  private filterProductCategories(productName: string, matchTreshold: number = 0.6): ProductCategoriesMatch[] {
+    let wordsInTestedProductName: Map<string, string> = this.convertToMapOfWords(productName);
 
+    //calculate matching ratio for each ProductCategoryMatch
+    let filteredProductCategoriesMatch = this.productCategoriesMatch.map(val => {
+      let matchingRatio = val.calculateMatchingRatio(wordsInTestedProductName);
+      
+      if(matchingRatio >= matchTreshold) {
+        let returnVal: ProductCategoriesMatch = val;
+        returnVal['matchingRatio'] = matchingRatio;
+  
+        return returnVal;  
+      }      
+    });
 
+    //Sort array
+    filteredProductCategoriesMatch.sort((a, b) => {
+      if(a['matchingRatio'] > b['matchingRatio'])
+        return 1;
+        
+      if (a['matchingRatio'] < b['matchingRatio'])
+        return -1;
 
-    return 0;
+      return 0;
+    });    
+
+    return filteredProductCategoriesMatch;
   }
 
   private prepareListOfWords() {
