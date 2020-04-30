@@ -23,7 +23,7 @@
     "@types/jest": "^24.0.18",
     "bootstrap": "^4.3.1",
     "core-js": "^2.6.9",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "js-image-zoom": "^0.6.0",
     "popper.js": "^1.15.0",
     "rxjs": "~6.3.3",
